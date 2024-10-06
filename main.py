@@ -122,6 +122,8 @@ class ALVRInstaller(QWidget):
         self.setWindowTitle('ALVR Installer')
 
         self.apk_status_label = QLabel('APK Status: Checking...')
+        self.apk_installed_label = QLabel('APK Installed: Checking...')
+        self.device_info = QLabel('Device Info: Checking...')
         self.device_status_label = QLabel('Device Status: Checking...')
         self.install_status_label = QLabel('')
 
@@ -149,6 +151,8 @@ class ALVRInstaller(QWidget):
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.apk_status_label)
+        vbox.addWidget(self.apk_installed_label)
+        vbox.addWidget(self.device_info)
         vbox.addWidget(self.device_status_label)
         vbox.addWidget(self.device_combo)
         vbox.addLayout(hbox)
@@ -207,6 +211,8 @@ class ALVRInstaller(QWidget):
         self.adb_timer = QTimer()
         self.adb_timer.timeout.connect(self.check_adb_devices)
         self.adb_timer.timeout.connect(self.check_usb_forwarding_status)
+        self.adb_timer.timeout.connect(self.check_installed_alvr_version)
+        self.adb_timer.timeout.connect(self.check_device_info)
         self.adb_timer.start(2000)  # Check every 2 seconds
 
     def check_adb_devices(self):
@@ -264,6 +270,52 @@ class ALVRInstaller(QWidget):
                 'USB Forwarding: Error checking status')
             print(f"USB Forwarding Error: {e}")
 
+    def check_installed_alvr_version(self):
+        package_name = "alvr.client.stable"
+        try:
+            result = subprocess.check_output(
+                ['adb', 'shell', 'dumpsys', 'package', package_name],
+                text=True
+            )
+            for line in result.splitlines():
+                if 'versionName' in line:
+                    self.apk_installed_label.setText(f'APK Installed: {line.split("=")[1].strip()}')
+                    return
+            self.apk_installed_label.setText('APK Installed: ALVR not installed')
+        except Exception as e:
+            self.apk_installed_label.setText('APK Installed: Error fetching ALVR version')
+            print(f"Error fetching ALVR version: {e}")
+
+    def check_device_info(self):
+        try:
+            device_info = {}
+
+            # Get model
+            model = subprocess.check_output(['adb', 'shell', 'getprop', 'ro.product.model'], text=True).strip()
+            device_info['Model'] = model
+
+            # Get manufacturer
+            manufacturer = subprocess.check_output(['adb', 'shell', 'getprop', 'ro.product.manufacturer'], text=True).strip()
+            device_info['Manufacturer'] = manufacturer
+
+            # Get Android version
+            android_version = subprocess.check_output(['adb', 'shell', 'getprop', 'ro.build.version.release'], text=True).strip()
+            device_info['Android Version'] = android_version
+
+            # Get build version
+            build_version = subprocess.check_output(['adb', 'shell', 'getprop', 'ro.build.display.id'], text=True).strip()
+            device_info['Build Version'] = build_version
+
+            # Get serial number
+            serial_number = subprocess.check_output(['adb', 'get-serialno'], text=True).strip()
+            device_info['Serial Number'] = serial_number
+
+            self.device_info.setText('Device Info:\n' + '\n'.join(
+                [f"{key}: {value}" for key, value in device_info.items()]))
+        except Exception as e:
+            self.device_info.setText('Device Info: Error fetching info')
+            print(f"Device Info: Error fetching info: {e}")
+        
     def install_apk(self):
         if not os.path.exists(self.APK_FILE):
             QMessageBox.information(
