@@ -1,5 +1,7 @@
 # ALVR Companion
 
+![](/assets/app.png)
+
 A small tool for managing ALVR from Linux distribution repositories.
 
 Main features
