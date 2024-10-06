@@ -121,6 +121,7 @@ class ALVRInstaller(QWidget):
     def initUI(self):
         self.setWindowTitle('ALVR Installer')
 
+        self.apk_version_label = QLabel(f'APK Version: {get_alvr_version()}')
         self.apk_status_label = QLabel('APK Status: Checking...')
         self.apk_installed_label = QLabel('APK Installed: Checking...')
         self.device_info = QLabel('Device Info: Checking...')
@@ -150,6 +151,7 @@ class ALVRInstaller(QWidget):
         hbox.addWidget(self.install_button)
 
         vbox = QVBoxLayout()
+        vbox.addWidget(self.apk_version_label)
         vbox.addWidget(self.apk_status_label)
         vbox.addWidget(self.apk_installed_label)
         vbox.addWidget(self.device_info)
