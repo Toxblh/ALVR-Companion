@@ -1,3 +1,6 @@
+
+<img src="assets/ru.toxblh.AlvrCompanion.png" align="right"
+     title="MTMR by Toxblh" width="60" height="60">
 # ALVR Companion
 
 ![](/assets/app.png)
