@@ -5,11 +5,10 @@ import os
 import threading
 import subprocess
 import requests
-import platform
 
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QProgressBar,
                              QVBoxLayout, QHBoxLayout, QMessageBox, QComboBox)
-from PyQt5.QtCore import Qt, QTimer, pyqtSignal, QObject
+from PyQt5.QtCore import QTimer, pyqtSignal, QObject
 
 ALVR_LATEST = "20.11.1"
 
@@ -195,7 +194,7 @@ class ALVRInstaller(QWidget):
         self.progress_bar.setValue(value)
 
     def download_finished(self):
-        with open(self.INFO_FILE, 'w') as f:
+        with open(self.INFO_FILE, 'w', encoding='utf-8') as f:
             f.write('Downloaded')
         self.check_apk_status()
         self.install_status_label.setText('APK Downloaded.')
