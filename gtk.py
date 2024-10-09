@@ -6,6 +6,10 @@ import threading
 import subprocess
 
 import gi
+
+from utils.adb import get_device_info
+from utils.get_alvr_version import get_alvr_version
+from views.list_device import create_list_device
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
@@ -13,42 +17,9 @@ from gi.repository import Gtk, Adw, GLib, Gio
 
 import requests
 
+APK_PACKAGE_NAME = 'alvr.client.stable'
 APP_VERSION = "0.1.1"
 ALVR_LATEST = "20.11.1"
-
-def check_command(command):
-    """Check if a command can be executed."""
-    try:
-        # Run the command with --version to see if it exists
-        subprocess.check_output([command, '--version'], text=True)
-        return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return False
-
-
-def get_alvr_version():
-    # Check for Arch Linux (pacman)
-    if check_command('pacman'):
-        try:
-            result = subprocess.check_output(
-                ['pacman', '-Qi', 'alvr'], text=True)
-            for line in result.splitlines():
-                if 'Version' in line:
-                    return line.split(':')[1].strip()
-        except subprocess.CalledProcessError:
-            print("Failed to retrieve ALVR version from pacman.")
-
-    # Check for rpm-based systems (rpm)
-    if check_command('rpm'):
-        try:
-            result = subprocess.check_output(['rpm', '-qi', 'alvr'], text=True)
-            for line in result.splitlines():
-                if 'Version' in line:
-                    return line.split(':')[1].strip()
-        except subprocess.CalledProcessError:
-            print("Failed to retrieve ALVR version from rpm.")
-
-    return None
 
 class ALVRInstaller(Adw.Application):
     def __init__(self):
@@ -77,8 +48,8 @@ class MainWindow(Adw.ApplicationWindow):
     def init_ui(self):
         # Create the main vertical box
         self.window_box = Adw.NavigationSplitView()
-        self.window_box.set_max_sidebar_width(220)
-        self.window_box.set_min_sidebar_width(220)
+        # self.window_box.set_max_sidebar_width(300)
+        # self.window_box.set_min_sidebar_width(300)
         self.set_content(self.window_box)
 
         # Левая боковая панель
@@ -108,8 +79,7 @@ class MainWindow(Adw.ApplicationWindow):
         
         self.sidebar.set_child(self.left_side)
         
-        
-        
+
         list = Gtk.ListBox()
         list.set_selection_mode(Gtk.SelectionMode.BROWSE)
         list.set_vexpand(True)
@@ -119,44 +89,12 @@ class MainWindow(Adw.ApplicationWindow):
         list.set_placeholder(placeholder)
         self.left_content.set_child(list)
         
-        
-        # Элемент списка
-        action_row = Adw.ActionRow()
-        action_row.set_title("Oculus Quest 2")
-        action_row.set_subtitle("APK: 20.11.1")
-        
-        image = Gtk.Image.new_from_file('./assets/oculusquest2.png')
-        image.set_pixel_size(32)
-        action_row.add_prefix(image)
-        
-        list.append(action_row)    
-        
-        
-        # -----Элемент списка------
-        action_row1 = Adw.ActionRow()
-        action_row1.set_title("Pico 4")
-        action_row1.set_subtitle("APK: 20.8.0")
-        
-        image1 = Gtk.Image.new_from_file('./assets/pico4.png')
-        image1.set_pixel_size(32)
-        action_row1.add_prefix(image1)
-        
-        list.append(action_row1)   
-        # -----Элемент списка 1 ----
-        action_row2 = Adw.ActionRow()
-        action_row2.set_title("Lynx R1")
-        action_row2.set_subtitle("APK: Не установлен")
-        
-        image2 = Gtk.Image.new_from_file('./assets/lynxr1.png')
-        image2.set_pixel_size(32)
-        action_row2.add_prefix(image2)
-        
-        list.append(action_row2)   
-        # -----Элемент списка 2 ----
-        
-        
-        
-        
+        # ----
+        list.append(create_list_device("Oculus Quest 2", "APK: 20.11.1", "./assets/oculusquest2.png"))
+        list.append(create_list_device("Pico 4", "APK: 20.8.0", "./assets/pico4.png"))
+        list.append(create_list_device("Lynx R1", "APK: Не установлен", "./assets/lynxr1.png"))
+        # ----
+
         # Основная правая область контента
         self.content = Adw.NavigationPage()
         self.content.set_title("Устройство")
@@ -266,8 +204,9 @@ class MainWindow(Adw.ApplicationWindow):
 
         # Create a progress bar
         self.progress_bar = Gtk.ProgressBar()
-        self.progress_bar.set_margin_top(-8)
-        self.progress_bar.set_visible(False)
+        # self.progress_bar.set_margin_top(-8)
+        # self.progress_bar.set_visible(False)
+        self.progress_bar.set_text("123")
         
 
         # Add the button and progress bar to the button box
@@ -328,26 +267,8 @@ class MainWindow(Adw.ApplicationWindow):
         self.device_combo = Gtk.DropDown.new(self.device_list)
         self.device_combo.set_sensitive(False)
 
-        # self.progress_bar = Gtk.ProgressBar()
-        # self.progress_bar.set_show_text(True)
-
-        # Arrange the widgets
-        # self.side_panel.append(self.apk_status_label)
-        # self.side_panel.append(self.device_status_label)
-        # self.side_panel.append(self.device_combo)
-
-        # button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        # button_box.append(self.download_button)
-        # button_box.append(self.install_button)
-        # self.side_panel.append(button_box)
-
-        # self.side_panel.append(self.progress_bar)
-        # self.side_panel.append(self.install_status_label)
-
     def show_about_dialog(self, action, param):       
         dialog = Adw.AboutDialog()
-        dialog.set_application_icon("ru.toxblh.AlvrCompanion")
-        dialog.set_application_icon('ru.toxblh.AlvrCompanion')
         dialog.set_application_name("ALVR Companion")
         dialog.set_developer_name("Anton Palgunov (Toxblh)")
         dialog.set_version(APP_VERSION)
@@ -370,7 +291,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.download_button.set_label('Download APK')
             self.install_button.set_sensitive(False)
 
-    def on_download_button_clicked(self, button):
+    def on_download_button_clicked(self):
         self.download_button.set_sensitive(False)
         self.install_button.set_sensitive(False)
         self.progress_bar.set_visible(True)
@@ -467,24 +388,12 @@ class MainWindow(Adw.ApplicationWindow):
             self.install_button.set_sensitive(False)
         return True  # Continue calling this function
 
-    def on_install_button_clicked(self, button):
+    def on_install_button_clicked(self):
         self.progress_bar.set_visible(True)
         if not os.path.exists(self.APK_FILE):
-            dialog = Gtk.MessageDialog(transient_for=self, modal=True, message_type=Gtk.MessageType.INFO,
-                                       buttons=Gtk.ButtonsType.OK, text='APK Not Downloaded')
-            dialog.set_markup('Please download the APK first.')
-            dialog.connect('response', lambda d, r: d.destroy())
-            dialog.show()
-            return
+            self.on_download_button_clicked()
 
         index = self.device_combo.get_selected()
-        if index == -1:
-            dialog = Gtk.MessageDialog(transient_for=self, modal=True, message_type=Gtk.MessageType.INFO,
-                                       buttons=Gtk.ButtonsType.OK, text='No Device Selected')
-            dialog.set_markup('Please select a device.')
-            dialog.connect('response', lambda d, r: d.destroy())
-            dialog.show()
-            return
 
         device_id = self.devices[index][0]
         status = self.devices[index][1]
@@ -505,7 +414,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         # Check if ALVR is already installed and get its version
         try:
-            package_info = subprocess.getoutput(f'adb -s {device_id} shell dumpsys package com.polygraphene.alvr')
+            package_info = subprocess.getoutput(f'adb -s {device_id} shell dumpsys package {APK_PACKAGE_NAME}')
             version_installed = None
             for line in package_info.splitlines():
                 if 'versionName=' in line:
@@ -602,47 +511,57 @@ class MainWindow(Adw.ApplicationWindow):
         self.download_button.set_sensitive(True)
         return False
     
-    def show_details_window(self, button):
-        window = Gtk.Window(title="Device Details")
-        window.set_transient_for(self)
-        window.set_modal(True)
-        window.set_default_size(400, 300)
-        window.set_resizable(False)
+    def show_details_window(self, _):
+        try:
+            device_info = get_device_info()
 
-        grid = Gtk.Grid()
-        grid.set_valign(Gtk.Align.CENTER)
-        grid.set_halign(Gtk.Align.CENTER)
-        grid.set_column_spacing(10)
-        grid.set_row_spacing(10)
-        grid.set_margin_top(10)
-        grid.set_margin_bottom(10)
-        grid.set_margin_start(10)
-        grid.set_margin_end(10)
+            window = Gtk.Window(title="Device Details")
+            window.set_transient_for(self)
+            window.set_modal(True)
+            window.set_default_size(400, 300)
+            window.set_resizable(False)
 
-        device_label = Gtk.Label(label="Device: Oculus Quest 2")
-        device_label.set_halign(Gtk.Align.START)
-        grid.attach(device_label, 0, 0, 2, 1)
+            grid = Gtk.Grid()
+            grid.set_valign(Gtk.Align.CENTER)
+            grid.set_halign(Gtk.Align.CENTER)
+            grid.set_column_spacing(10)
+            grid.set_row_spacing(10)
+            grid.set_margin_top(10)
+            grid.set_margin_bottom(10)
+            grid.set_margin_start(10)
+            grid.set_margin_end(10)
 
-        version_label = Gtk.Label(label="ALVR Version: 20.11.1")
-        version_label.set_halign(Gtk.Align.START)
-        grid.attach(version_label, 0, 1, 2, 1)
+            device_label = Gtk.Label(label=device_info)
+            device_label.set_halign(Gtk.Align.START)
+            grid.attach(device_label, 0, 0, 2, 1)
 
-        android_version_label = Gtk.Label(label="Android Version: 12")
-        android_version_label.set_halign(Gtk.Align.START)
-        grid.attach(android_version_label, 0, 2, 2, 1)
+            version_label = Gtk.Label(label="ALVR Version: 20.11.1")
+            version_label.set_halign(Gtk.Align.START)
+            grid.attach(version_label, 0, 1, 2, 1)
 
-        build_version_label = Gtk.Label(label="Build Version: SQ3A.22.A1")
-        build_version_label.set_halign(Gtk.Align.START)
-        grid.attach(build_version_label, 0, 3, 2, 1)
+            android_version_label = Gtk.Label(label="Android Version: 12")
+            android_version_label.set_halign(Gtk.Align.START)
+            grid.attach(android_version_label, 0, 2, 2, 1)
 
-        close_button = Gtk.Button(label="Close")
-        close_button.connect('clicked', lambda b: window.destroy())
-        grid.attach(close_button, 0, 4, 2, 1)
+            build_version_label = Gtk.Label(label="Build Version: SQ3A.22.A1")
+            build_version_label.set_halign(Gtk.Align.START)
+            grid.attach(build_version_label, 0, 3, 2, 1)
 
-        clamped_grid = Adw.Clamp(child=grid)
-        window.set_child(clamped_grid)
+            close_button = Gtk.Button(label="Close")
+            close_button.connect('clicked', lambda b: window.destroy())
+            grid.attach(close_button, 0, 4, 2, 1)
 
-        window.present()
+            clamped_grid = Adw.Clamp(child=grid)
+            window.set_child(clamped_grid)
+
+            window.present()
+
+            print('Device Info:\n' + '\n'.join(
+                [f"{key}: {value}" for key, value in device_info.items()]))
+        except Exception as e:
+            print(f"Device Info: Error fetching info: {e}")
+
+      
 
 def main():
     app = ALVRInstaller()
