@@ -243,10 +243,6 @@ class MainWindow(Adw.ApplicationWindow):
         device_version_grid.attach(build_version_label_label, 0, 2, 1, 1)
         device_version_grid.attach(build_version_label, 1, 2, 1, 1)
 
-        # Attach the new labels to the grid
-        device_version_grid.attach(android_version_label, 0, 1, 1, 1)
-        device_version_grid.attach(build_version_label, 1, 1, 1, 1)
-
         # Add the new labels to the device text box
 
         # Attach the labels to the grid
@@ -270,9 +266,8 @@ class MainWindow(Adw.ApplicationWindow):
 
         # Create a progress bar
         self.progress_bar = Gtk.ProgressBar()
-        self.progress_bar.set_margin_top(-10)
-        self.progress_bar.set_margin_bottom(-40)
-        # progress_bar.set_visible(False)
+        self.progress_bar.set_margin_top(-8)
+        self.progress_bar.set_visible(False)
         
 
         # Add the button and progress bar to the button box
@@ -378,6 +373,7 @@ class MainWindow(Adw.ApplicationWindow):
     def on_download_button_clicked(self, button):
         self.download_button.set_sensitive(False)
         self.install_button.set_sensitive(False)
+        self.progress_bar.set_visible(True)
         self.progress_bar.set_fraction(0)
         self.progress_bar.set_text('')
         self.install_status_label.set_text('Downloading APK...')
@@ -415,6 +411,7 @@ class MainWindow(Adw.ApplicationWindow):
         return False  # Stop calling this function
 
     def on_download_complete(self):
+        self.progress_bar.set_visible(False)
         self.check_apk_status()
         self.install_status_label.set_text('APK Downloaded.')
         self.download_button.set_sensitive(True)
@@ -423,6 +420,7 @@ class MainWindow(Adw.ApplicationWindow):
         return False
 
     def on_download_error(self, message):
+        self.progress_bar.set_visible(False)
         dialog = Gtk.MessageDialog(transient_for=self, modal=True, message_type=Gtk.MessageType.ERROR,
                                    buttons=Gtk.ButtonsType.OK, text='Download Error')
         dialog.set_body(f'An error occurred while downloading the APK:\n{message}')
@@ -470,6 +468,7 @@ class MainWindow(Adw.ApplicationWindow):
         return True  # Continue calling this function
 
     def on_install_button_clicked(self, button):
+        self.progress_bar.set_visible(True)
         if not os.path.exists(self.APK_FILE):
             dialog = Gtk.MessageDialog(transient_for=self, modal=True, message_type=Gtk.MessageType.INFO,
                                        buttons=Gtk.ButtonsType.OK, text='APK Not Downloaded')
@@ -571,6 +570,7 @@ class MainWindow(Adw.ApplicationWindow):
             GLib.idle_add(self.on_install_error, str(e))
 
     def on_install_finished(self):
+        self.progress_bar.set_visible(False)
         if hasattr(self, 'progress_timeout_id') and self.progress_timeout_id:
             GLib.source_remove(self.progress_timeout_id)
             self.progress_timeout_id = None
