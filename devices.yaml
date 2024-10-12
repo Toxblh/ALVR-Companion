@@ -1,0 +1,9 @@
+devices:
+  - model: 'Quest 2'
+    image: './assets/oculusquest2.png'
+  - model: 'Pico 4'
+    image: './assets/pico4.png'
+  - model: 'Lynx R1'
+    image: './assets/lynxr1.png'
+  - model: 'Pixel 6 Pro'
+    image: './assets/pixel.png'
