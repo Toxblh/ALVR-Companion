@@ -1,0 +1,271 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: पास्केट संस्करण\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-13 21:08+0100\n"
+"PO-Revision-Date: 2024-10-13 21:08+0100\n"
+"Last-Translator: स्वतः उत्पन्न\n"
+"Language-Team: कोई नहीं\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: main.py:81 main.py:196 main.py:862
+msgid "ALVR Companion"
+msgstr "एएलवीआर साथी"
+
+#: main.py:146
+#, python-brace-format
+msgid "Error setting user config. Serial not found: {device_serial}"
+msgstr "उपयोगकर्ता कॉन्फ़िगरेशन सेट करने में त्रुटि। सीरियल नहीं मिला: {device_serial}"
+
+#: main.py:148
+#, python-brace-format
+msgid "Setting user config. Unique ID: {unique_id}: Serial: {device_serial}"
+msgstr "उपयोगकर्ता कॉन्फ़िगरेशन सेट करना। विशिष्ट आईडी: {unique_id}: सीरियल: {device_serial}"
+
+#: main.py:161
+msgid "About"
+msgstr "के बारे में"
+
+#: main.py:185
+msgid "Connect a device"
+msgstr "एक डिवाइस कनेक्ट करें"
+
+#: main.py:204
+msgid "Show Details"
+msgstr "विवरण दिखाएँ"
+
+#: main.py:229
+msgid "Device"
+msgstr "डिवाइस"
+
+#: main.py:244
+msgid "Device not authorized! Allow USB connection on the device"
+msgstr "डिवाइस अधिकृत नहीं है! डिवाइस पर यूएसबी कनेक्शन की अनुमति दें"
+
+#: main.py:245
+msgid "Show how"
+msgstr "कैसे दिखाएँ"
+
+#: main.py:299
+msgid "ALVR installed:"
+msgstr "एएलवीआर स्थापितः"
+
+#: main.py:308
+msgid "Android version:"
+msgstr "एंड्रॉइड संस्करणः"
+
+#: main.py:324
+#, python-brace-format
+msgid "Battery Level: {level}%"
+msgstr "बैटरी स्तरः {level}%"
+
+#: main.py:327
+#, python-brace-format
+msgid "Charging Status: {status}"
+msgstr "चार्जिंग स्थिति: {status}"
+
+#: main.py:345 main.py:647 main.py:844 main.py:856
+msgid "Install"
+msgstr "स्थापित करें"
+
+#: main.py:350 main.py:842
+msgid "Re-install"
+msgstr "पुनः स्थापित करें"
+
+#: main.py:360
+msgid "Streaming"
+msgstr "स्ट्रीमिंग"
+
+#: main.py:364
+msgid "USB Connection"
+msgstr "यूएसबी कनेक्शन"
+
+#: main.py:380
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+#: main.py:384
+msgid "Automatically update"
+msgstr "स्वतः अपडेट करें"
+
+#: main.py:385
+msgid "Automatically update ALVR when connected"
+msgstr "कनेक्ट होने पर एएलवीआर को स्वचालित रूप से अपडेट करें"
+
+#: main.py:393
+msgid "Automatically connect via USB"
+msgstr "यूएसबी के माध्यम से स्वचालित रूप से कनेक्ट करें"
+
+#: main.py:394
+msgid "Automatically prepare the device for USB connection instead of Wi-Fi"
+msgstr "वाईफाई के बजाए यूएसबी कनेक्शन के लिए डिवाइस को स्वतः तैयार करें"
+
+#: main.py:402
+msgid "Use Wi-Fi"
+msgstr "वाई-फाई का उपयोग करें"
+
+#: main.py:403
+msgid "Switch connection to Wi-Fi"
+msgstr "कनेक्शन को वाई-फाई पर स्विच करें"
+
+#: main.py:411
+msgid "Use Crop"
+msgstr "क्रॉप का प्रयोग करें"
+
+#: main.py:412
+msgid "Enable cropping for scrcpy"
+msgstr "scrcpy के लिए क्रॉपिंग सक्षम करें"
+
+#: main.py:420
+msgid "Crop Parameters"
+msgstr "क्रॉप पैरामीटर"
+
+#: main.py:474
+msgid "Instruction"
+msgstr "निर्देश"
+
+#: main.py:488
+msgid "Instruction not available"
+msgstr "निर्देश उपलब्ध नहीं है"
+
+#: main.py:496 main.py:513 main.py:527
+#, python-brace-format
+msgid "USB Forwarding Error: {error}"
+msgstr "यूएसबी फॉरवर्डिंग त्रुटिः {error}"
+
+#: main.py:505
+msgid "USB Forwarding Disabled"
+msgstr "यूएसबी फॉरवर्डिंग अक्षम"
+
+#: main.py:510
+msgid "USB Forwarding Enabled"
+msgstr "यूएसबी फॉरवर्डिंग सक्षम"
+
+#: main.py:519
+msgid "USB Forwarding: Enabled"
+msgstr "यूएसबी फॉरवर्डिंगः सक्षम"
+
+#: main.py:522
+msgid "USB Forwarding: Not enabled"
+msgstr "यूएसबी फॉरवर्डिंगः सक्षम नहीं है"
+
+#: main.py:526
+msgid "USB Forwarding: Error checking status"
+msgstr "यूएसबी फॉरवर्डिंगः स्थिति जांचने में त्रुटि"
+
+#: main.py:553
+#, python-brace-format
+msgid "Error starting scrcpy: {error}"
+msgstr "scrcpy शुरू करने में त्रुटिः {error}"
+
+#: main.py:582
+msgid "Failed to obtain device IP address"
+msgstr "डिवाइस आईपी पता प्राप्त करने में विफल"
+
+#: main.py:587
+#, python-brace-format
+msgid "Wi-Fi connection error: {error}"
+msgstr "वाई-फाई कनेक्शन त्रुटिः {error}"
+
+#: main.py:593
+msgid "Device connected via Wi-Fi"
+msgstr "डिवाइस वाई-फाई के माध्यम से कनेक्ट हो गया"
+
+#: main.py:599
+msgid "Device disconnected from Wi-Fi"
+msgstr "डिवाइस वाई-फाई से डिस्कनेक्ट हो गया"
+
+#: main.py:606
+#, python-brace-format
+msgid "Error disconnecting from Wi-Fi: {error}"
+msgstr "वाई-फाई से डिस्कनेक्ट करने में त्रुटिः {error}"
+
+#: main.py:624
+msgid "Download complete"
+msgstr "डाउनलोड पूरा हुआ"
+
+#: main.py:632
+#, python-brace-format
+msgid "Downloading... {percentage}%"
+msgstr "डाउनलोड हो रहा है... {percentage}%"
+
+#: main.py:646
+msgid "APK Downloaded"
+msgstr "एपीके डाउनलोड हुआ"
+
+#: main.py:652
+#, python-brace-format
+msgid "Download APK Error: {message}"
+msgstr "एपीके डाउनलोड त्रुटिः {message}"
+
+#: main.py:676 main.py:736
+#, python-brace-format
+msgid "ADB Error: {error}"
+msgstr "एडीबी त्रुटिः {error}"
+
+#: main.py:749 main.py:751
+#, python-brace-format
+msgid "Auto-updating device {unique_id}"
+msgstr "डिवाइस {unique_id} को स्वतः अपडेट किया जा रहा है"
+
+#: main.py:782
+msgid "Device disconnected"
+msgstr "डिवाइस डिस्कनेक्ट हो गया"
+
+#: main.py:792
+msgid "Downloading..."
+msgstr "डाउनलोड हो रहा है..."
+
+#: main.py:798 main.py:817
+msgid "Installing..."
+msgstr "स्थापित हो रहा है..."
+
+#: main.py:838
+msgid "Installation Complete"
+msgstr "स्थापना पूर्ण"
+
+#: main.py:839
+msgid "APK Installed Successfully."
+msgstr "एपीके सफलतापूर्वक स्थापित हुआ।"
+
+#: main.py:853
+msgid "Installation Error."
+msgstr "स्थापना त्रुटि।"
+
+#: main.py:863
+msgid "Anton Palgunov (Toxblh)"
+msgstr "एंटन पालगुनोव (टोक्षबल्ह)"
+
+#: main.py:865
+msgid "© 2024 Anton Palgunov (Toxblh)"
+msgstr "© 2024 एंटन पालगुनोव (टोक्षबल्ह)"
+
+#: main.py:877
+msgid "Device Details"
+msgstr "डिवाइस विवरण"
+
+#: main.py:884
+msgid "Device Information"
+msgstr "डिवाइस जानकारी"
+
+#: main.py:885
+#, python-brace-format
+msgid "ALVR Latest: {version}\n"
+msgstr "एएलवीआर नवीनतम: {version}\n"
+
+#: main.py:885 main.py:894
+#, python-brace-format
+msgid "{key}: {value}"
+msgstr "{key}: {value}"
+
+#: main.py:893
+msgid "Device Info:\n"
+msgstr "डिवाइस जानकारी:\n"
+
+#: main.py:896
+#, python-brace-format
+msgid "Device Info: Error fetching info: {error}"
+msgstr "डिवाइस जानकारी: जानकारी प्राप्त करने में त्रुटि: {error}"

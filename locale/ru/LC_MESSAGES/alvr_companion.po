@@ -1,0 +1,278 @@
+# Russian translations for PACKAGE package.
+# Copyright (C) 2024 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-13 21:08+0100\n"
+"PO-Revision-Date: 2024-10-13 21:08+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: main.py:81 main.py:196 main.py:862
+msgid "ALVR Companion"
+msgstr "ALVR Компаньон"
+
+#: main.py:146
+#, python-brace-format
+msgid "Error setting user config. Serial not found: {device_serial}"
+msgstr "Ошибка при настройке конфигурации пользователя. Серийный номер не найден: {device_serial}"
+
+#: main.py:148
+#, python-brace-format
+msgid "Setting user config. Unique ID: {unique_id}: Serial: {device_serial}"
+msgstr "Настройка конфигурации пользователя. Уникальный ID: {unique_id}: Серийный номер: {device_serial}"
+
+#: main.py:161
+msgid "About"
+msgstr "О программе"
+
+#: main.py:185
+msgid "Connect a device"
+msgstr "Подключите устройство"
+
+#: main.py:204
+msgid "Show Details"
+msgstr "Показать подробности"
+
+#: main.py:229
+msgid "Device"
+msgstr "Устройство"
+
+#: main.py:244
+msgid "Device not authorized! Allow USB connection on the device"
+msgstr "Устройство не авторизовано! Разрешите USB-соединение на устройстве"
+
+#: main.py:245
+msgid "Show how"
+msgstr "Показать как"
+
+#: main.py:299
+msgid "ALVR installed:"
+msgstr "ALVR установлен:"
+
+#: main.py:308
+msgid "Android version:"
+msgstr "Версия Android:"
+
+#: main.py:324
+#, python-brace-format
+msgid "Battery Level: {level}%"
+msgstr "Уровень заряда: {level}%"
+
+#: main.py:327
+#, python-brace-format
+msgid "Charging Status: {status}"
+msgstr "Статус зарядки: {status}"
+
+#: main.py:345 main.py:647 main.py:844 main.py:856
+msgid "Install"
+msgstr "Установить"
+
+#: main.py:350 main.py:842
+msgid "Re-install"
+msgstr "Переустановить"
+
+#: main.py:360
+msgid "Streaming"
+msgstr "Стриминг"
+
+#: main.py:364
+msgid "USB Connection"
+msgstr "USB-соединение"
+
+#: main.py:380
+msgid "Settings"
+msgstr "Настройки"
+
+#: main.py:384
+msgid "Automatically update"
+msgstr "Автоматически обновлять"
+
+#: main.py:385
+msgid "Automatically update ALVR when connected"
+msgstr "Автоматически обновлять ALVR при подключении"
+
+#: main.py:393
+msgid "Automatically connect via USB"
+msgstr "Автоматически подключаться через USB"
+
+#: main.py:394
+msgid "Automatically prepare the device for USB connection instead of Wi-Fi"
+msgstr "Автоматически готовить устройство для USB-соединения вместо Wi-Fi"
+
+#: main.py:402
+msgid "Use Wi-Fi"
+msgstr "Использовать Wi-Fi"
+
+#: main.py:403
+msgid "Switch connection to Wi-Fi"
+msgstr "Переключить соединение на Wi-Fi"
+
+#: main.py:411
+msgid "Use Crop"
+msgstr "Использовать обрезку"
+
+#: main.py:412
+msgid "Enable cropping for scrcpy"
+msgstr "Включить обрезку для scrcpy"
+
+#: main.py:420
+msgid "Crop Parameters"
+msgstr "Параметры обрезки"
+
+#: main.py:474
+msgid "Instruction"
+msgstr "Инструкция"
+
+#: main.py:488
+msgid "Instruction not available"
+msgstr "Инструкция не доступна"
+
+#: main.py:496 main.py:513 main.py:527
+#, python-brace-format
+msgid "USB Forwarding Error: {error}"
+msgstr "Ошибка переадресации USB: {error}"
+
+#: main.py:505
+msgid "USB Forwarding Disabled"
+msgstr "Переадресация USB отключена"
+
+#: main.py:510
+msgid "USB Forwarding Enabled"
+msgstr "Переадресация USB включена"
+
+#: main.py:519
+msgid "USB Forwarding: Enabled"
+msgstr "Переадресация USB: Включена"
+
+#: main.py:522
+msgid "USB Forwarding: Not enabled"
+msgstr "Переадресация USB: Не включена"
+
+#: main.py:526
+msgid "USB Forwarding: Error checking status"
+msgstr "Переадресация USB: Ошибка проверки статуса"
+
+#: main.py:553
+#, python-brace-format
+msgid "Error starting scrcpy: {error}"
+msgstr "Ошибка запуска scrcpy: {error}"
+
+#: main.py:582
+msgid "Failed to obtain device IP address"
+msgstr "Не удалось получить IP-адрес устройства"
+
+#: main.py:587
+#, python-brace-format
+msgid "Wi-Fi connection error: {error}"
+msgstr "Ошибка подключения к Wi-Fi: {error}"
+
+#: main.py:593
+msgid "Device connected via Wi-Fi"
+msgstr "Устройство подключено через Wi-Fi"
+
+#: main.py:599
+msgid "Device disconnected from Wi-Fi"
+msgstr "Устройство отключено от Wi-Fi"
+
+#: main.py:606
+#, python-brace-format
+msgid "Error disconnecting from Wi-Fi: {error}"
+msgstr "Ошибка отключения от Wi-Fi: {error}"
+
+#: main.py:624
+msgid "Download complete"
+msgstr "Загрузка завершена"
+
+#: main.py:632
+#, python-brace-format
+msgid "Downloading... {percentage}%"
+msgstr "Загрузка... {percentage}%"
+
+#: main.py:646
+msgid "APK Downloaded"
+msgstr "APK загружен"
+
+#: main.py:652
+#, python-brace-format
+msgid "Download APK Error: {message}"
+msgstr "Ошибка загрузки APK: {message}"
+
+#: main.py:676 main.py:736
+#, python-brace-format
+msgid "ADB Error: {error}"
+msgstr "Ошибка ADB: {error}"
+
+#: main.py:749 main.py:751
+#, python-brace-format
+msgid "Auto-updating device {unique_id}"
+msgstr "Автообновление устройства {unique_id}"
+
+#: main.py:782
+msgid "Device disconnected"
+msgstr "Устройство отключено"
+
+#: main.py:792
+msgid "Downloading..."
+msgstr "Загрузка..."
+
+#: main.py:798 main.py:817
+msgid "Installing..."
+msgstr "Установка..."
+
+#: main.py:838
+msgid "Installation Complete"
+msgstr "Установка завершена"
+
+#: main.py:839
+msgid "APK Installed Successfully."
+msgstr "APK успешно установлен."
+
+#: main.py:853
+msgid "Installation Error."
+msgstr "Ошибка установки."
+
+#: main.py:863
+msgid "Anton Palgunov (Toxblh)"
+msgstr "Антон Пальгунов (Toxblh)"
+
+#: main.py:865
+msgid "© 2024 Anton Palgunov (Toxblh)"
+msgstr "© 2024 Антон Пальгунов (Toxblh)"
+
+#: main.py:877
+msgid "Device Details"
+msgstr "Детали устройства"
+
+#: main.py:884
+msgid "Device Information"
+msgstr "Информация об устройстве"
+
+#: main.py:885
+#, python-brace-format
+msgid "ALVR Latest: {version}\n"
+msgstr "Последняя версия ALVR: {version}\n"
+
+#: main.py:885 main.py:894
+#, python-brace-format
+msgid "{key}: {value}"
+msgstr "{key}: {value}"
+
+#: main.py:893
+msgid "Device Info:\n"
+msgstr "Информация об устройстве:\n"
+
+#: main.py:896
+#, python-brace-format
+msgid "Device Info: Error fetching info: {error}"
+msgstr "Информация об устройстве: Ошибка получения информации: {error}"

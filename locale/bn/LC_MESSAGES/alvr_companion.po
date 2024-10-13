@@ -1,0 +1,276 @@
+# Bengali translations for PACKAGE package.
+# Copyright (C) 2024 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-13 21:08+0100\n"
+"PO-Revision-Date: 2024-10-13 21:08+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: main.py:81 main.py:196 main.py:862
+msgid "ALVR Companion"
+msgstr "এএলভিআর সঙ্গী"
+
+#: main.py:146
+#, python-brace-format
+msgid "Error setting user config. Serial not found: {device_serial}"
+msgstr "ব্যবহারকারী কনফিগার সেট করতে ত্রুটি। সিরিয়াল পাওয়া যায়নি: {device_serial}"
+
+#: main.py:148
+#, python-brace-format
+msgid "Setting user config. Unique ID: {unique_id}: Serial: {device_serial}"
+msgstr "ব্যবহারকারী কনফিগার সেট করা হচ্ছে। অনন্য আইডি: {unique_id}: সিরিয়াল: {device_serial}"
+
+#: main.py:161
+msgid "About"
+msgstr "সম্পর্কিত"
+
+#: main.py:185
+msgid "Connect a device"
+msgstr "একটি ডিভাইস সংযুক্ত করুন"
+
+#: main.py:204
+msgid "Show Details"
+msgstr "বিবরণ দেখান"
+
+#: main.py:229
+msgid "Device"
+msgstr "ডিভাইস"
+
+#: main.py:244
+msgid "Device not authorized! Allow USB connection on the device"
+msgstr "ডিভাইস অনুমোদিত নয়! ডিভাইসে ইউএসবি সংযোগ অনুমতি দিন"
+
+#: main.py:245
+msgid "Show how"
+msgstr "কীভাবে দেখাবেন"
+
+#: main.py:299
+msgid "ALVR installed:"
+msgstr "এএলভিআর ইনস্টল হয়েছে:"
+
+#: main.py:308
+msgid "Android version:"
+msgstr "অ্যান্ড্রয়েড সংস্করণ:"
+
+#: main.py:324
+#, python-brace-format
+msgid "Battery Level: {level}%"
+msgstr "ব্যাটারি স্তর: {level}%"
+
+#: main.py:327
+#, python-brace-format
+msgid "Charging Status: {status}"
+msgstr "চার্জিং অবস্থা: {status}"
+
+#: main.py:345 main.py:647 main.py:844 main.py:856
+msgid "Install"
+msgstr "ইনস্টল করুন"
+
+#: main.py:350 main.py:842
+msgid "Re-install"
+msgstr "পুনরায় ইনস্টল করুন"
+
+#: main.py:360
+msgid "Streaming"
+msgstr "স্ট্রিমিং"
+
+#: main.py:364
+msgid "USB Connection"
+msgstr "ইউএসবি সংযোগ"
+
+#: main.py:380
+msgid "Settings"
+msgstr "সেটিংস"
+
+#: main.py:384
+msgid "Automatically update"
+msgstr "স্বয়ংক্রিয়ভাবে আপডেট করুন"
+
+#: main.py:385
+msgid "Automatically update ALVR when connected"
+msgstr "সংযুক্ত হলে এএলভিআর স্বয়ংক্রিয়ভাবে আপডেট করুন"
+
+#: main.py:393
+msgid "Automatically connect via USB"
+msgstr "ইউএসবি মাধ্যমে স্বয়ংক্রিয়ভাবে সংযোগ করুন"
+
+#: main.py:394
+msgid "Automatically prepare the device for USB connection instead of Wi-Fi"
+msgstr "ওয়াই-ফাই-এর পরিবর্তে ইউএসবি সংযোগের জন্য ডিভাইসটি স্বয়ংক্রিয়ভাবে প্রস্তুত করুন"
+
+#: main.py:402
+msgid "Use Wi-Fi"
+msgstr "ওয়াই-ফাই ব্যবহার করুন"
+
+#: main.py:403
+msgid "Switch connection to Wi-Fi"
+msgstr "ওয়াই-ফাই এ সংযোগ পরিবর্তন করুন"
+
+#: main.py:411
+msgid "Use Crop"
+msgstr "ক্রপ ব্যবহার করুন"
+
+#: main.py:412
+msgid "Enable cropping for scrcpy"
+msgstr "স্ক্রিপির জন্য ক্রপিং সক্রিয় করুন"
+
+#: main.py:420
+msgid "Crop Parameters"
+msgstr "ক্রপ পরামিতি"
+
+#: main.py:474
+msgid "Instruction"
+msgstr "নির্দেশনা"
+
+#: main.py:488
+msgid "Instruction not available"
+msgstr "নির্দেশনা উপলব্ধ নেই"
+
+#: main.py:496 main.py:513 main.py:527
+#, python-brace-format
+msgid "USB Forwarding Error: {error}"
+msgstr "ইউএসবি ফরওয়ার্ডিং ত্রুটি: {error}"
+
+#: main.py:505
+msgid "USB Forwarding Disabled"
+msgstr "ইউএসবি ফরওয়ার্ডিং অক্ষম"
+
+#: main.py:510
+msgid "USB Forwarding Enabled"
+msgstr "ইউএসবি ফরওয়ার্ডিং সক্রিয়"
+
+#: main.py:519
+msgid "USB Forwarding: Enabled"
+msgstr "ইউএসবি ফরওয়ার্ডিং: সক্রিয়"
+
+#: main.py:522
+msgid "USB Forwarding: Not enabled"
+msgstr "ইউএসবি ফরওয়ার্ডিং: সক্রিয় নয়"
+
+#: main.py:526
+msgid "USB Forwarding: Error checking status"
+msgstr "ইউএসবি ফরওয়ার্ডিং: স্থিতি পরীক্ষা করতে ত্রুটি"
+
+#: main.py:553
+#, python-brace-format
+msgid "Error starting scrcpy: {error}"
+msgstr "স্ক্রিপি শুরু করতে ত্রুটি: {error}"
+
+#: main.py:582
+msgid "Failed to obtain device IP address"
+msgstr "ডিভাইসের আইপি ঠিকানা পেতে ব্যর্থ"
+
+#: main.py:587
+#, python-brace-format
+msgid "Wi-Fi connection error: {error}"
+msgstr "ওয়াই-ফাই সংযোগ ত্রুটি: {error}"
+
+#: main.py:593
+msgid "Device connected via Wi-Fi"
+msgstr "ডিভাইস ওয়াই-ফাই-এর মাধ্যমে সংযুক্ত"
+
+#: main.py:599
+msgid "Device disconnected from Wi-Fi"
+msgstr "ডিভাইস ওয়াই-ফাই থেকে সংযোগ বিচ্ছিন্ন করা হয়েছে"
+
+#: main.py:606
+#, python-brace-format
+msgid "Error disconnecting from Wi-Fi: {error}"
+msgstr "ওয়াই-ফাই থেকে সংযোগ বিচ্ছিন্ন করতে ত্রুটি: {error}"
+
+#: main.py:624
+msgid "Download complete"
+msgstr "ডাউনলোড সম্পূর্ণ"
+
+#: main.py:632
+#, python-brace-format
+msgid "Downloading... {percentage}%"
+msgstr "ডাউনলোড হচ্ছে... {percentage}%"
+
+#: main.py:646
+msgid "APK Downloaded"
+msgstr "এপিকে ডাউনলোড করা হয়েছে"
+
+#: main.py:652
+#, python-brace-format
+msgid "Download APK Error: {message}"
+msgstr "এপিকে ডাউনলোড ত্রুটি: {message}"
+
+#: main.py:676 main.py:736
+#, python-brace-format
+msgid "ADB Error: {error}"
+msgstr "এডিবি ত্রুটি: {error}"
+
+#: main.py:749 main.py:751
+#, python-brace-format
+msgid "Auto-updating device {unique_id}"
+msgstr "স্বয়ংক্রিয়ভাবে ডিভাইস আপডেট করা হচ্ছে {unique_id}"
+
+#: main.py:782
+msgid "Device disconnected"
+msgstr "ডিভাইস সংযোগ বিচ্ছিন্ন"
+
+#: main.py:792
+msgid "Downloading..."
+msgstr "ডাউনলোড হচ্ছে..."
+
+#: main.py:798 main.py:817
+msgid "Installing..."
+msgstr "ইনস্টল করা হচ্ছে..."
+
+#: main.py:838
+msgid "Installation Complete"
+msgstr "ইনস্টলেশন সম্পূর্ণ"
+
+#: main.py:839
+msgid "APK Installed Successfully."
+msgstr "এপিকে সফলভাবে ইনস্টল করা হয়েছে।"
+
+#: main.py:853
+msgid "Installation Error."
+msgstr "ইনস্টলেশন ত্রুটি।"
+
+#: main.py:863
+msgid "Anton Palgunov (Toxblh)"
+msgstr "এন্টন পালগুনভ (টক্সব্লহ)"
+
+#: main.py:865
+msgid "© 2024 Anton Palgunov (Toxblh)"
+msgstr "© 2024 এন্টন পালগুনভ (টক্সব্লহ)"
+
+#: main.py:877
+msgid "Device Details"
+msgstr "ডিভাইসের বিবরণ"
+
+#: main.py:884
+msgid "Device Information"
+msgstr "ডিভাইসের তথ্য"
+
+#: main.py:885
+#, python-brace-format
+msgid "ALVR Latest: {version}\n"
+msgstr "এএলভিআর সর্বশেষ: {version}\n"
+
+#: main.py:885 main.py:894
+#, python-brace-format
+msgid "{key}: {value}"
+msgstr "{key}: {value}"
+
+#: main.py:893
+msgid "Device Info:\n"
+msgstr "ডিভাইসের তথ্য:\n"
+
+#: main.py:896
+#, python-brace-format
+msgid "Device Info: Error fetching info: {error}"
+msgstr "ডিভাইসের তথ্য: তথ্য আনার সময় ত্রুটি: {error}"

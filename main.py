@@ -29,8 +29,13 @@ CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "ALVR-Companion")
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.yaml")
 DEVICES_FILE = os.path.join("devices.yaml")
 
-gettext.bindtextdomain('alvr_companion', localedir='locale')
-gettext.textdomain('alvr_companion')
+locale_dir = os.path.join(os.path.dirname(__file__), 'locale')
+if os.path.exists(locale_dir):
+    gettext.bindtextdomain('alvr_companion', localedir=locale_dir)
+    gettext.textdomain('alvr_companion')
+else:
+    print("Warning: Locale directory not found. Translations will not be available.")
+
 _ = gettext.gettext
 
 class DeviceInfo(TypedDict):
@@ -77,8 +82,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.set_default_size(800, 600)
 
         self.VERSION = get_alvr_version() or ALVR_LATEST
-        self.APK_URL = f"https://github.com/alvr-org/ALVR/releases/download/v{
-            self.VERSION}/alvr_client_android.apk"
+        self.APK_URL = f"https://github.com/alvr-org/ALVR/releases/download/v{self.VERSION}/alvr_client_android.apk"
         self.APK_FILE = f"/tmp/alvr_client_{self.VERSION}.apk"
         self.INFO_FILE = f"/tmp/alvr_client_{self.VERSION}.info"
 
@@ -317,10 +321,10 @@ class MainWindow(Adw.ApplicationWindow):
         device_version_grid.attach(alvr_label, 0, 0, 1, 1)
         device_version_grid.attach(version_label, 1, 0, 1, 1)
 
-        battery_label = Gtk.Label(label=_("Battery Level: " + device_info.get('Battery Level', 'Unknown')) + "%")
+        battery_label = Gtk.Label(label=_("Battery Level: {level}%").format(level=device_info.get('Battery Level', 'Unknown')))
         battery_label.set_halign(Gtk.Align.START)
         
-        charging_label = Gtk.Label(label=_("Charging Status: " + device_info.get('Charging Status', 'Unknown')))
+        charging_label = Gtk.Label(label=_("Charging Status: {status}").format(status=device_info.get('Charging Status', 'Unknown')))
         charging_label.set_halign(Gtk.Align.START)
 
         self.usb_forward_status_label = Gtk.Label()
@@ -455,22 +459,19 @@ class MainWindow(Adw.ApplicationWindow):
         self.set_user_config(self.current_serial, 'auto_usb_forward', switch.get_active())
 
     def get_device_image_path(self, model):
-        # Получение пути к изображению устройства
         return self.get_device_config(model).get('image', './assets/unknown.png')
        
 
     def on_show_how_clicked(self, button, device_model):
-        # Открытие окна с инструкцией
         self.show_instruction_window(device_model)
 
     def show_instruction_window(self, device_model):
-        # Загрузка инструкции из конфигурационного файла и отображение окна
         instruction_file = f"assets/instructions/{device_model}.yaml"
         if os.path.exists(instruction_file):
             with open(instruction_file, 'r') as f:
                 instructions = yaml.safe_load(f)
             # Создание окна с инструкцией
-            instruction_window = Gtk.Window(title="Инструкция")
+            instruction_window = Gtk.Window(title=_("Instruction"))
             instruction_box = Gtk.Box(
                 orientation=Gtk.Orientation.VERTICAL, spacing=10)
             instruction_window.set_child(instruction_box)
@@ -484,7 +485,7 @@ class MainWindow(Adw.ApplicationWindow):
 
             instruction_window.present()
         else:
-            self.show_toast("Инструкция недоступна")
+            self.show_toast(_("Instruction not available"))
 
 # USB Forwading
     def is_usb_forwarding_enabled(self):
@@ -492,38 +493,38 @@ class MainWindow(Adw.ApplicationWindow):
             result = subprocess.check_output(['adb', 'forward', '--list'], text=True)
             return 'tcp:9943' in result and 'tcp:9944' in result
         except Exception as e:
-            print(f"USB Forwarding Error: {e}")
+            print(_('USB Forwarding Error: {error}').format(error=e))
             return False
         
-    def setup_usb_forwarding(self, _):
+    def setup_usb_forwarding(self, button):
         try:
             if self.is_usb_forwarding_enabled():
                 # USB forwarding is currently enabled, so disable it
                 subprocess.run(['adb', 'forward', '--remove', 'tcp:9943'])
                 subprocess.run(['adb', 'forward', '--remove', 'tcp:9944'])
-                self.show_toast('USB Forwarding Disabled')
+                self.show_toast(_('USB Forwarding Disabled'))
             else:
                 # USB forwarding is currently disabled, so enable it
                 subprocess.run(['adb', 'forward', 'tcp:9943', 'tcp:9943'])
                 subprocess.run(['adb', 'forward', 'tcp:9944', 'tcp:9944'])
-                self.show_toast('USB Forwarding Enabled')
+                self.show_toast(_('USB Forwarding Enabled'))
             self.check_usb_forwarding_status()
         except Exception as e:
-            self.show_toast(f'USB Forwarding Error: {e}')
+            self.show_toast(_('USB Forwarding Error: {error}').format(error=e))
 
     def check_usb_forwarding_status(self):
         try:
             if self.is_usb_forwarding_enabled():
                 self.usb_button.add_css_class("success")
-                self.usb_forward_status_label.set_label('USB Forwarding: Enabled')
+                self.usb_forward_status_label.set_label(_('USB Forwarding: Enabled'))
             else:
                 self.usb_button.remove_css_class("success")
-                self.usb_forward_status_label.set_label('USB Forwarding: Not enabled')
+                self.usb_forward_status_label.set_label(_('USB Forwarding: Not enabled'))
         except Exception as e:
             self.usb_button.remove_css_class("success")
             self.usb_button.add_css_class("error")
-            self.usb_forward_status_label.set_label('USB Forwarding: Error checking status')
-            print(f"USB Forwarding Error: {e}")
+            self.usb_forward_status_label.set_label(_('USB Forwarding: Error checking status'))
+            print(_('USB Forwarding Error: {error}').format(error=e))
 # End USB Forwarding
 
 
@@ -549,7 +550,7 @@ class MainWindow(Adw.ApplicationWindow):
         try:
             subprocess.Popen(scrcpy_command)
         except Exception as e:
-            print(f"Ошибка при запуске scrcpy: {e}")
+            print(_('Error starting scrcpy: {error}').format(error=e))
 # End Streaming
 
 
@@ -578,31 +579,31 @@ class MainWindow(Adw.ApplicationWindow):
                                     capture_output=True, text=True)
             ip_address = next((line.split()[1].split('/')[0] for line in result.stdout.split('\n') if 'inet ' in line), None)
             if not ip_address:
-                raise Exception("Не удалось получить IP адрес устройства")
+                raise Exception(_("Failed to obtain device IP address"))
 
             subprocess.run(['adb', 'connect', f'{ip_address}:5555'], check=True)
             self._update_wifi_config(device_serial, ip_address)
         except Exception as e:
-            self.show_toast(f"Ошибка подключения по Wi-Fi: {e}")
+            self.show_toast(_('Wi-Fi connection error: {error}').format(error=e))
 
     def _update_wifi_config(self, device_serial, ip_address):
         self.set_user_config(device_serial, 'wifi_enabled', True)
         self.set_user_config(device_serial, 'ip_address', ip_address)
         self.set_user_config(device_serial, 'wifi_serial', f"{ip_address}:5555")
-        self.show_toast("Устройство подключено по Wi-Fi")
+        self.show_toast(_("Device connected via Wi-Fi"))
 
     def disconnect_device_wifi(self, device_serial, save=False):
         # Отключение устройства от Wi-Fi
         try:
             subprocess.run(['adb', '-s', device_serial, 'disconnect'], check=True)
-            self.show_toast("Устройство отключено от Wi-Fi")
+            self.show_toast(_("Device disconnected from Wi-Fi"))
             
             # Сохранение настройки
             if save:
                 self.set_user_config(device_serial, 'wifi_enabled', False)
             
         except Exception as e:
-            self.show_toast(f"Ошибка отключения от Wi-Fi: {e}")
+            self.show_toast(_('Error disconnecting from Wi-Fi: {error}').format(error=e))
 
     def connect_wifi_devices(self):
         for serial, device_config in self.user_config.get('devices', {}).items():
@@ -628,8 +629,7 @@ class MainWindow(Adw.ApplicationWindow):
                         dl += len(data)
                         f.write(data)
                         fraction = dl / total_length
-                        GLib.idle_add(self.update_progress_bar, fraction, f'Downloading... {
-                                      int(fraction*100)}%')
+                        GLib.idle_add(self.update_progress_bar, fraction, _('Downloading... {percentage}%').format(percentage=int(fraction*100)))
             with open(self.INFO_FILE, 'w') as f:
                 f.write('Downloaded')
             GLib.idle_add(self.on_download_complete)
@@ -673,7 +673,7 @@ class MainWindow(Adw.ApplicationWindow):
                     self.devices_info[serial] = device_info
         
         except Exception as e:
-            print(f"ADB Error: {e}")
+            print(_('ADB Error: {error}').format(error=e))
         return True
 
     def check_adb_devices(self):
@@ -733,7 +733,7 @@ class MainWindow(Adw.ApplicationWindow):
                 del self.devices_info[serial]
 
         except Exception as e:
-            print(f"ADB Error: {e}")
+            print(_('ADB Error: {error}').format(error=e))
         return True  # Продолжаем вызывать эту функцию
     
 # End Monitor ADB devices
@@ -746,9 +746,9 @@ class MainWindow(Adw.ApplicationWindow):
             device_alvr_version = device_info['ALVR Version']
             if device_alvr_version != self.VERSION:
                 # Start installation
-                print(f"Auto-updating device {unique_id}")
+                print(_("Auto-updating device {unique_id}").format(unique_id=unique_id))
                 self.install_apk(serial)
-                self.show_toast(_("Auto-updating device {unique_id}"))
+                self.show_toast(_("Auto-updating device {unique_id}").format(unique_id=unique_id))
                 
     def auto_usb_forward_device(self, serial):
         if self.get_user_config(serial, 'auto_usb_forward'):
@@ -814,7 +814,7 @@ class MainWindow(Adw.ApplicationWindow):
         if fraction > 1.0:
             fraction = 0.0
         self.progress_bar.set_fraction(fraction)
-        self.progress_bar.set_text('Installing...')
+        self.progress_bar.set_text(_('Installing...'))
         return True  # Continue calling this function
 
     def install_apk(self, device_id):
@@ -835,8 +835,8 @@ class MainWindow(Adw.ApplicationWindow):
             GLib.source_remove(self.progress_timeout_id)
             self.progress_timeout_id = None
         self.progress_bar.set_fraction(1.0)
-        self.progress_bar.set_text('Installation Complete')
-        self.show_toast('APK Installed Successfully.')
+        self.progress_bar.set_text(_('Installation Complete'))
+        self.show_toast(_('APK Installed Successfully.'))
         self.install_button.set_sensitive(True)
         if self.devices_info[self.current_serial]['ALVR Version'] == self.VERSION:
             self.install_button.set_label(_('Re-install'))
@@ -850,7 +850,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.progress_timeout_id = None
         self.progress_bar.set_fraction(0.0)
         self.progress_bar.set_text('')
-        self.show_toast('Installation Error.')
+        self.show_toast(_('Installation Error.'))
         print(message)
         self.install_button.set_sensitive(True)
         self.install_button.set_label(_('Install'))
@@ -871,18 +871,18 @@ class MainWindow(Adw.ApplicationWindow):
 
         dialog.present(self.get_application().get_active_window())
 
-    def show_details_window(self, _):
+    def show_details_window(self, button):
         try:
             device_info =  self.devices_info[self.current_serial]
-            window = Gtk.Window(title="Device Details")
+            window = Gtk.Window(title=_("Device Details"))
             window.set_transient_for(self)
             window.set_modal(True)
             window.set_default_size(400, 300)
             window.set_resizable(False)
 
             box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-            label = Gtk.Label(label="Device Information")
-            info = Gtk.Label(label=f"ALVR Latest: {self.VERSION}\n" + '\n'.join([f"{key}: {value}" for key, value in device_info.items()]))
+            label = Gtk.Label(label=_("Device Information"))
+            info = Gtk.Label(label=_("ALVR Latest: {version}\n").format(version=self.VERSION) + '\n'.join([_(f"{key}: {value}") for key, value in device_info.items()]))
             
             box.append(label)
             box.append(info)
@@ -890,10 +890,10 @@ class MainWindow(Adw.ApplicationWindow):
 
             window.present()
 
-            print('Device Info:\n' + '\n'.join(
-                [f"{key}: {value}" for key, value in device_info.items()]))
+            print(_('Device Info:\n') + '\n'.join(
+                [_(f"{key}: {value}") for key, value in device_info.items()]))
         except Exception as e:
-            print(f"Device Info: Error fetching info: {e}")
+            print(_('Device Info: Error fetching info: {error}').format(error=e))
             
     def show_toast(self, message):
         toast = Adw.Toast.new(message)

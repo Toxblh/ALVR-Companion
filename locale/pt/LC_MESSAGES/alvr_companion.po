@@ -1,0 +1,196 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-13 21:08+0100\n"
+"PO-Revision-Date: 2024-10-13 21:08+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "ALVR Companion"
+msgstr "Companheiro ALVR"
+
+msgid "Error setting user config. Serial not found: {device_serial}"
+msgstr "Erro ao definir configuração do usuário. Número de série não encontrado: {device_serial}"
+
+msgid "Setting user config. Unique ID: {unique_id}: Serial: {device_serial}"
+msgstr "Definindo configuração do usuário. ID Único: {unique_id}: Número de Série: {device_serial}"
+
+msgid "About"
+msgstr "Sobre"
+
+msgid "Connect a device"
+msgstr "Conectar um dispositivo"
+
+msgid "Show Details"
+msgstr "Mostrar Detalhes"
+
+msgid "Device"
+msgstr "Dispositivo"
+
+msgid "Device not authorized! Allow USB connection on the device"
+msgstr "Dispositivo não autorizado! Permita a conexão USB no dispositivo"
+
+msgid "Show how"
+msgstr "Mostrar como"
+
+msgid "ALVR installed:"
+msgstr "ALVR instalado:"
+
+msgid "Android version:"
+msgstr "Versão do Android:"
+
+msgid "Battery Level: {level}%"
+msgstr "Nível de Bateria: {level}%"
+
+msgid "Charging Status: {status}"
+msgstr "Status de Carregamento: {status}"
+
+msgid "Install"
+msgstr "Instalar"
+
+msgid "Re-install"
+msgstr "Reinstalar"
+
+msgid "Streaming"
+msgstr "Transmissão"
+
+msgid "USB Connection"
+msgstr "Conexão USB"
+
+msgid "Settings"
+msgstr "Configurações"
+
+msgid "Automatically update"
+msgstr "Atualizar automaticamente"
+
+msgid "Automatically update ALVR when connected"
+msgstr "Atualizar automaticamente o ALVR quando conectado"
+
+msgid "Automatically connect via USB"
+msgstr "Conectar automaticamente via USB"
+
+msgid "Automatically prepare the device for USB connection instead of Wi-Fi"
+msgstr "Preparar automaticamente o dispositivo para conexão USB em vez de Wi-Fi"
+
+msgid "Use Wi-Fi"
+msgstr "Usar Wi-Fi"
+
+msgid "Switch connection to Wi-Fi"
+msgstr "Mudar conexão para Wi-Fi"
+
+msgid "Use Crop"
+msgstr "Usar Corte"
+
+msgid "Enable cropping for scrcpy"
+msgstr "Ativar corte para scrcpy"
+
+msgid "Crop Parameters"
+msgstr "Parâmetros de Corte"
+
+msgid "Instruction"
+msgstr "Instrução"
+
+msgid "Instruction not available"
+msgstr "Instrução não disponível"
+
+msgid "USB Forwarding Error: {error}"
+msgstr "Erro de Redirecionamento USB: {error}"
+
+msgid "USB Forwarding Disabled"
+msgstr "Redirecionamento USB Desativado"
+
+msgid "USB Forwarding Enabled"
+msgstr "Redirecionamento USB Ativado"
+
+msgid "USB Forwarding: Enabled"
+msgstr "Redirecionamento USB: Ativado"
+
+msgid "USB Forwarding: Not enabled"
+msgstr "Redirecionamento USB: Não ativado"
+
+msgid "USB Forwarding: Error checking status"
+msgstr "Redirecionamento USB: Erro ao verificar status"
+
+msgid "Error starting scrcpy: {error}"
+msgstr "Erro ao iniciar scrcpy: {error}"
+
+msgid "Failed to obtain device IP address"
+msgstr "Falha ao obter endereço IP do dispositivo"
+
+msgid "Wi-Fi connection error: {error}"
+msgstr "Erro de conexão Wi-Fi: {error}"
+
+msgid "Device connected via Wi-Fi"
+msgstr "Dispositivo conectado via Wi-Fi"
+
+msgid "Device disconnected from Wi-Fi"
+msgstr "Dispositivo desconectado do Wi-Fi"
+
+msgid "Error disconnecting from Wi-Fi: {error}"
+msgstr "Erro ao desconectar do Wi-Fi: {error}"
+
+msgid "Download complete"
+msgstr "Download concluído"
+
+msgid "Downloading... {percentage}%"
+msgstr "Baixando... {percentage}%"
+
+msgid "APK Downloaded"
+msgstr "APK Baixado"
+
+msgid "Download APK Error: {message}"
+msgstr "Erro no Download do APK: {message}"
+
+msgid "ADB Error: {error}"
+msgstr "Erro ADB: {error}"
+
+msgid "Auto-updating device {unique_id}"
+msgstr "Atualizando automaticamente o dispositivo {unique_id}"
+
+msgid "Device disconnected"
+msgstr "Dispositivo desconectado"
+
+msgid "Downloading..."
+msgstr "Baixando..."
+
+msgid "Installing..."
+msgstr "Instalando..."
+
+msgid "Installation Complete"
+msgstr "Instalação Completa"
+
+msgid "APK Installed Successfully."
+msgstr "APK Instalado com Sucesso."
+
+msgid "Installation Error."
+msgstr "Erro de Instalação."
+
+msgid "Anton Palgunov (Toxblh)"
+msgstr "Anton Palgunov (Toxblh)"
+
+msgid "© 2024 Anton Palgunov (Toxblh)"
+msgstr "© 2024 Anton Palgunov (Toxblh)"
+
+msgid "Device Details"
+msgstr "Detalhes do Dispositivo"
+
+msgid "Device Information"
+msgstr "Informações do Dispositivo"
+
+msgid "ALVR Latest: {version}\n"
+msgstr "Última versão do ALVR: {version}\n"
+
+msgid "{key}: {value}"
+msgstr "{key}: {value}"
+
+msgid "Device Info:\n"
+msgstr "Informações do Dispositivo:\n"
+
+msgid "Device Info: Error fetching info: {error}"
+msgstr "Informações do Dispositivo: Erro ao buscar informações: {error}"

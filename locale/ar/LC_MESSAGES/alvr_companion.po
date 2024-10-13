@@ -1,0 +1,183 @@
+
+msgid "ALVR Companion"
+msgstr "ملحق ALVR"
+
+msgid "Error setting user config. Serial not found: {device_serial}"
+msgstr "خطأ في إعداد تكوين المستخدم. الرقم التسلسلي غير موجود: {device_serial}"
+
+msgid "Setting user config. Unique ID: {unique_id}: Serial: {device_serial}"
+msgstr "إعداد تكوين المستخدم. معرف فريد: {unique_id}: الرقم التسلسلي: {device_serial}"
+
+msgid "About"
+msgstr "حول"
+
+msgid "Connect a device"
+msgstr "اتصال جهاز"
+
+msgid "Show Details"
+msgstr "عرض التفاصيل"
+
+msgid "Device"
+msgstr "الجهاز"
+
+msgid "Device not authorized! Allow USB connection on the device"
+msgstr "الجهاز غير مصرح! يسمح بالاتصال عبر USB على الجهاز"
+
+msgid "Show how"
+msgstr "عرض كيفية"
+
+msgid "ALVR installed:"
+msgstr "تم تثبيت ALVR:"
+
+msgid "Android version:"
+msgstr "إصدار الأندرويد:"
+
+msgid "Battery Level: {level}%"
+msgstr "مستوى البطارية: {level}%"
+
+msgid "Charging Status: {status}"
+msgstr "حالة الشحن: {status}"
+
+msgid "Install"
+msgstr "تثبيت"
+
+msgid "Re-install"
+msgstr "إعادة التثبيت"
+
+msgid "Streaming"
+msgstr "البث"
+
+msgid "USB Connection"
+msgstr "اتصال USB"
+
+msgid "Settings"
+msgstr "الإعدادات"
+
+msgid "Automatically update"
+msgstr "تحديث تلقائي"
+
+msgid "Automatically update ALVR when connected"
+msgstr "تحديث ALVR تلقائيًا عند الاتصال"
+
+msgid "Automatically connect via USB"
+msgstr "الاتصال تلقائيًا عبر USB"
+
+msgid "Automatically prepare the device for USB connection instead of Wi-Fi"
+msgstr "تحضير الجهاز تلقائيًا للاتصال عبر USB بدلاً من Wi-Fi"
+
+msgid "Use Wi-Fi"
+msgstr "استخدام Wi-Fi"
+
+msgid "Switch connection to Wi-Fi"
+msgstr "تبديل الاتصال إلى Wi-Fi"
+
+msgid "Use Crop"
+msgstr "استخدام القص"
+
+msgid "Enable cropping for scrcpy"
+msgstr "تمكين القص لـ scrcpy"
+
+msgid "Crop Parameters"
+msgstr "معلمات القص"
+
+msgid "Instruction"
+msgstr "تعليمات"
+
+msgid "Instruction not available"
+msgstr "التعليمات غير متوفرة"
+
+msgid "USB Forwarding Error: {error}"
+msgstr "خطأ في تحويل USB: {error}"
+
+msgid "USB Forwarding Disabled"
+msgstr "تعطيل تحويل USB"
+
+msgid "USB Forwarding Enabled"
+msgstr "تمكين تحويل USB"
+
+msgid "USB Forwarding: Enabled"
+msgstr "تحويل USB: ممكن"
+
+msgid "USB Forwarding: Not enabled"
+msgstr "تحويل USB: غير ممكن"
+
+msgid "USB Forwarding: Error checking status"
+msgstr "تحويل USB: خطأ في التحقق من الحالة"
+
+msgid "Error starting scrcpy: {error}"
+msgstr "خطأ في بدء تشغيل scrcpy: {error}"
+
+msgid "Failed to obtain device IP address"
+msgstr "فشل في الحصول على عنوان IP للجهاز"
+
+msgid "Wi-Fi connection error: {error}"
+msgstr "خطأ في اتصال Wi-Fi: {error}"
+
+msgid "Device connected via Wi-Fi"
+msgstr "الجهاز متصل عبر Wi-Fi"
+
+msgid "Device disconnected from Wi-Fi"
+msgstr "الجهاز غير متصل من Wi-Fi"
+
+msgid "Error disconnecting from Wi-Fi: {error}"
+msgstr "خطأ في فصل الاتصال من Wi-Fi: {error}"
+
+msgid "Download complete"
+msgstr "اكتمل التحميل"
+
+msgid "Downloading... {percentage}%"
+msgstr "جارٍ التحميل... {percentage}%"
+
+msgid "APK Downloaded"
+msgstr "تم تحميل ملف APK"
+
+msgid "Download APK Error: {message}"
+msgstr "خطأ في تحميل APK: {message}"
+
+msgid "ADB Error: {error}"
+msgstr "خطأ في ADB: {error}"
+
+msgid "Auto-updating device {unique_id}"
+msgstr "تحديث الجهاز تلقائيًا {unique_id}"
+
+msgid "Device disconnected"
+msgstr "الجهاز غير متصل"
+
+msgid "Downloading..."
+msgstr "جارٍ التحميل..."
+
+msgid "Installing..."
+msgstr "جارٍ التثبيت..."
+
+msgid "Installation Complete"
+msgstr "اكتمل التثبيت"
+
+msgid "APK Installed Successfully."
+msgstr "تم تثبيت ملف APK بنجاح."
+
+msgid "Installation Error."
+msgstr "خطأ في التثبيت."
+
+msgid "Anton Palgunov (Toxblh)"
+msgstr "أنتون بالجنوف (Toxblh)"
+
+msgid "© 2024 Anton Palgunov (Toxblh)"
+msgstr "حقوق الطبع والنشر © 2024 أنتون بالجنوف (Toxblh)"
+
+msgid "Device Details"
+msgstr "تفاصيل الجهاز"
+
+msgid "Device Information"
+msgstr "معلومات الجهاز"
+
+msgid "ALVR Latest: {version}\n"
+msgstr "أحدث إصدار ALVR: {version}\n"
+
+msgid "{key}: {value}"
+msgstr "{key}: {value}"
+
+msgid "Device Info:\n"
+msgstr "معلومات الجهاز:\n"
+
+msgid "Device Info: Error fetching info: {error}"
+msgstr "معلومات الجهاز: خطأ في جلب المعلومات: {error}"

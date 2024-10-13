@@ -1,0 +1,277 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-13 21:08+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: main.py:81 main.py:196 main.py:862
+msgid "ALVR Companion"
+msgstr ""
+
+#: main.py:146
+#, python-brace-format
+msgid "Error setting user config. Serial not found: {device_serial}"
+msgstr ""
+
+#: main.py:148
+#, python-brace-format
+msgid "Setting user config. Unique ID: {unique_id}: Serial: {device_serial}"
+msgstr ""
+
+#: main.py:161
+msgid "About"
+msgstr ""
+
+#: main.py:185
+msgid "Connect a device"
+msgstr ""
+
+#: main.py:204
+msgid "Show Details"
+msgstr ""
+
+#: main.py:229
+msgid "Device"
+msgstr ""
+
+#: main.py:244
+msgid "Device not authorized! Allow USB connection on the device"
+msgstr ""
+
+#: main.py:245
+msgid "Show how"
+msgstr ""
+
+#: main.py:299
+msgid "ALVR installed:"
+msgstr ""
+
+#: main.py:308
+msgid "Android version:"
+msgstr ""
+
+#: main.py:324
+#, python-brace-format
+msgid "Battery Level: {level}%"
+msgstr ""
+
+#: main.py:327
+#, python-brace-format
+msgid "Charging Status: {status}"
+msgstr ""
+
+#: main.py:345 main.py:647 main.py:844 main.py:856
+msgid "Install"
+msgstr ""
+
+#: main.py:350 main.py:842
+msgid "Re-install"
+msgstr ""
+
+#: main.py:360
+msgid "Streaming"
+msgstr ""
+
+#: main.py:364
+msgid "USB Connection"
+msgstr ""
+
+#: main.py:380
+msgid "Settings"
+msgstr ""
+
+#: main.py:384
+msgid "Automatically update"
+msgstr ""
+
+#: main.py:385
+msgid "Automatically update ALVR when connected"
+msgstr ""
+
+#: main.py:393
+msgid "Automatically connect via USB"
+msgstr ""
+
+#: main.py:394
+msgid "Automatically prepare the device for USB connection instead of Wi-Fi"
+msgstr ""
+
+#: main.py:402
+msgid "Use Wi-Fi"
+msgstr ""
+
+#: main.py:403
+msgid "Switch connection to Wi-Fi"
+msgstr ""
+
+#: main.py:411
+msgid "Use Crop"
+msgstr ""
+
+#: main.py:412
+msgid "Enable cropping for scrcpy"
+msgstr ""
+
+#: main.py:420
+msgid "Crop Parameters"
+msgstr ""
+
+#: main.py:474
+msgid "Instruction"
+msgstr ""
+
+#: main.py:488
+msgid "Instruction not available"
+msgstr ""
+
+#: main.py:496 main.py:513 main.py:527
+#, python-brace-format
+msgid "USB Forwarding Error: {error}"
+msgstr ""
+
+#: main.py:505
+msgid "USB Forwarding Disabled"
+msgstr ""
+
+#: main.py:510
+msgid "USB Forwarding Enabled"
+msgstr ""
+
+#: main.py:519
+msgid "USB Forwarding: Enabled"
+msgstr ""
+
+#: main.py:522
+msgid "USB Forwarding: Not enabled"
+msgstr ""
+
+#: main.py:526
+msgid "USB Forwarding: Error checking status"
+msgstr ""
+
+#: main.py:553
+#, python-brace-format
+msgid "Error starting scrcpy: {error}"
+msgstr ""
+
+#: main.py:582
+msgid "Failed to obtain device IP address"
+msgstr ""
+
+#: main.py:587
+#, python-brace-format
+msgid "Wi-Fi connection error: {error}"
+msgstr ""
+
+#: main.py:593
+msgid "Device connected via Wi-Fi"
+msgstr ""
+
+#: main.py:599
+msgid "Device disconnected from Wi-Fi"
+msgstr ""
+
+#: main.py:606
+#, python-brace-format
+msgid "Error disconnecting from Wi-Fi: {error}"
+msgstr ""
+
+#: main.py:624
+msgid "Download complete"
+msgstr ""
+
+#: main.py:632
+#, python-brace-format
+msgid "Downloading... {percentage}%"
+msgstr ""
+
+#: main.py:646
+msgid "APK Downloaded"
+msgstr ""
+
+#: main.py:652
+#, python-brace-format
+msgid "Download APK Error: {message}"
+msgstr ""
+
+#: main.py:676 main.py:736
+#, python-brace-format
+msgid "ADB Error: {error}"
+msgstr ""
+
+#: main.py:749 main.py:751
+#, python-brace-format
+msgid "Auto-updating device {unique_id}"
+msgstr ""
+
+#: main.py:782
+msgid "Device disconnected"
+msgstr ""
+
+#: main.py:792
+msgid "Downloading..."
+msgstr ""
+
+#: main.py:798 main.py:817
+msgid "Installing..."
+msgstr ""
+
+#: main.py:838
+msgid "Installation Complete"
+msgstr ""
+
+#: main.py:839
+msgid "APK Installed Successfully."
+msgstr ""
+
+#: main.py:853
+msgid "Installation Error."
+msgstr ""
+
+#: main.py:863
+msgid "Anton Palgunov (Toxblh)"
+msgstr ""
+
+#: main.py:865
+msgid "© 2024 Anton Palgunov (Toxblh)"
+msgstr ""
+
+#: main.py:877
+msgid "Device Details"
+msgstr ""
+
+#: main.py:884
+msgid "Device Information"
+msgstr ""
+
+#: main.py:885
+#, python-brace-format
+msgid "ALVR Latest: {version}\n"
+msgstr ""
+
+#: main.py:885 main.py:894
+#, python-brace-format
+msgid "{key}: {value}"
+msgstr ""
+
+#: main.py:893
+msgid "Device Info:\n"
+msgstr ""
+
+#: main.py:896
+#, python-brace-format
+msgid "Device Info: Error fetching info: {error}"
+msgstr ""
