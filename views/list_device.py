@@ -6,14 +6,16 @@ gi.require_version('Adw', '1')
 
 from gi.repository import Gtk, Adw
 
-def create_list_device(name, version, image_path):
+def is_ip_value(value):
+    ip_pattern = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$')
+    return ip_pattern.match(value)
+
+def create_list_device(name, version, image_path, is_wifi):
     action_row = Adw.ActionRow()
     action_row.set_title(name)
-    ip_pattern = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$')
 
-    if ip_pattern.match(version):
-        last_octet = '.' + version.split('.')[-1].split(':')[0]
-        version = f"WiFi: {last_octet}"
+    if is_wifi:
+        version = f"WiFi: {version}"
     else:
         version = f"USB: {version}"
     action_row.set_subtitle(version)

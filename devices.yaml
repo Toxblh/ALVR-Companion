@@ -1,9 +1,34 @@
 devices:
-  - model: 'Quest 2'
-    image: './assets/oculusquest2.png'
-  - model: 'Pico 4'
-    image: './assets/pico4.png'
+  - model: 'Focus Vision'
+    image: './assets/htcvivefocusvision.png'
+  - model: 'XR Elite'
+    image: './assets/htcvivexrelite.png'
   - model: 'Lynx R1'
     image: './assets/lynxr1.png'
+  - model: 'Quest 1'
+    image: './assets/oculusquest1.png'
+    default_crop: 1280:720:1500:350
+  - model: 'Quest 2'
+    image: './assets/oculusquest2.png'
+    default_crop: 1600:900:2017:510
+  - model: 'Quest 3'
+    image: './assets/metaquest3.png'
+    default_crop: 1600:900:2017:510
+  - model: 'Quest 3s'
+    image: './assets/metaquest3s.png'
+    default_crop: 1600:900:2017:510
+  - model: 'Quest Pro'
+    image: './assets/metaquestpro.png'
+    default_crop: 1600:900:2017:510
+  - model: 'Pico 4'
+    image: './assets/pico4.png'
+  - model: 'Pico 4 Ultra'
+    image: './assets/pico4ultra.png'
+  - model: 'Pico Neo 3'
+    image: './assets/piconeo3.png'
   - model: 'Pixel 6 Pro'
     image: './assets/pixel.png'
+  - model: 'yvr1'
+    image: './assets/yvr1.png'
+  - model: 'yvr2'
+    image: './assets/yvr2.png'

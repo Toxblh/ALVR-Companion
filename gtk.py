@@ -11,13 +11,15 @@ import yaml
 
 from utils.adb import get_device_info
 from utils.get_alvr_version import get_alvr_version
-from views.list_device import create_list_device
+from views.list_device import create_list_device, is_ip_value
 import gettext
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk
+from typing import Dict, Any
+from typing import TypedDict
 
 APK_PACKAGE_NAME = 'alvr.client.stable'
 APP_VERSION = "0.1.1"
@@ -30,6 +32,18 @@ DEVICES_FILE = os.path.join("devices.yaml")
 gettext.bindtextdomain('alvr_companion', localedir='locale')
 gettext.textdomain('alvr_companion')
 _ = gettext.gettext
+
+class DeviceInfo(TypedDict):
+    auto_update: bool
+    auto_usb_forward: bool
+    crop_params: str
+    ip_address: str
+    use_crop: bool
+    wifi_enabled: bool
+    wifi_serial: str
+    
+
+DeviceConfig = Dict[str, DeviceInfo]
 
 class ALVRInstaller(Adw.Application):
     def __init__(self):
@@ -59,18 +73,6 @@ class MainWindow(Adw.ApplicationWindow):
     def __init__(self, application):
         super().__init__(application=application)
         
-        # Add custom styles
-        css_provider = Gtk.CssProvider()
-        css_provider.load_from_data(b"""
-        button.green {
-            background-color: green;
-            color: white;
-        }
-        """)
-        Gtk.StyleContext.add_provider_for_display(
-            Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
-
         self.set_title(_('ALVR Companion'))
         self.set_default_size(800, 600)
 
@@ -91,40 +93,62 @@ class MainWindow(Adw.ApplicationWindow):
         self.start_adb_monitor()
         self.connect_wifi_devices()
 
-# Config files
+# Devices files
     def load_devices_config(self):
         with open(DEVICES_FILE, 'r', encoding='utf-8') as f:
             self.devices_config = yaml.safe_load(f)
+            
+    def get_device_config(self, model):
+        for device in self.devices_config['devices']:
+            if device['model'] == model:
+                return device
+        return {}
+# End Devices files
 
+
+# User config files
+    def get_device_unique_id(self, serial):
+        if not is_ip_value(serial):
+            return serial
+        
+        try:
+            for device_serial, device_config in self.user_config.get('devices', {}).items():
+                if device_config.get('wifi_serial') == serial:
+                    return device_serial
+        except:
+            return None
+
+        
     def load_user_config(self):
         if not os.path.exists(CONFIG_DIR):
             os.makedirs(CONFIG_DIR)
         if os.path.exists(CONFIG_FILE):
             with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-                self.user_config = yaml.safe_load(f)
+                self.user_config = yaml.safe_load(f) or {}
         else:
             self.user_config = {}
 
     def save_user_config(self):
         with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
             yaml.dump(self.user_config, f)
-# End Config files
+
+    def get_user_config(self, device_serial, key, fallback=False):
+        uniniq_id = self.get_device_unique_id(device_serial)
+        return self.user_config.get('devices', {}).get(uniniq_id, {}).get(key, fallback)
+    
+    def set_user_config(self, device_serial, key, value):
+        unique_id = self.get_device_unique_id(device_serial)
+        if unique_id is None:
+            print(_('Error setting user config. Serial not found: {device_serial}').format(device_serial=device_serial))
+            return
+        print(_('Setting user config. Unique ID: {unique_id}: Serial: {device_serial}').format(unique_id=unique_id, device_serial=device_serial))
+        device_config = self.user_config.setdefault('devices', {}).setdefault(unique_id, {})
+        device_config[key] = value
+        self.save_user_config()
+# End User config files
 
 
     def init_ui(self):
-        # Add custom styles
-        css_provider = Gtk.CssProvider()
-        css_provider.load_from_data(b"""
-        button.green {
-            background-color: green;
-            color: white;
-        }
-        """)
-        Gtk.StyleContext.add_provider_for_display(
-            Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
-
-        
         self.window_box = Adw.NavigationSplitView()
         self.window_box.set_min_sidebar_width(230)
         self.set_content(self.window_box)
@@ -180,6 +204,9 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.main_body = Gtk.ScrolledWindow()
         self.main_body.set_vexpand(True)
+        self.main_body.set_margin_start(20)
+        self.main_body.set_margin_end(20)
+        self.main_body.set_margin_end(20)
         main_warp.append(self.main_body)
         
         self.toast_overlay = Adw.ToastOverlay()
@@ -225,12 +252,13 @@ class MainWindow(Adw.ApplicationWindow):
             self.current_serial = device_serial
 
     def show_device_page(self, device_serial, force_update=False):
+        unique_id = self.get_device_unique_id(device_serial)
         if device_serial in self.device_pages and not force_update:
-            page = self.device_pages[device_serial]
+            page = self.device_pages[unique_id]
         else:
             device_info = self.devices_info[device_serial]
             page = self.create_device_page(device_info)
-            self.device_pages[device_serial] = page
+            self.device_pages[unique_id] = page
         self.main_body.set_child(page)
 
     def create_device_page(self, device_info):
@@ -289,12 +317,21 @@ class MainWindow(Adw.ApplicationWindow):
         device_version_grid.attach(alvr_label, 0, 0, 1, 1)
         device_version_grid.attach(version_label, 1, 0, 1, 1)
 
+        battery_label = Gtk.Label(label=_("Battery Level: " + device_info.get('Battery Level', 'Unknown')) + "%")
+        battery_label.set_halign(Gtk.Align.START)
+        
+        charging_label = Gtk.Label(label=_("Charging Status: " + device_info.get('Charging Status', 'Unknown')))
+        charging_label.set_halign(Gtk.Align.START)
+
         self.usb_forward_status_label = Gtk.Label()
+        self.usb_forward_status_label.set_halign(Gtk.Align.START)
 
         # Add the grid to the device text box
         version_label.set_halign(Gtk.Align.START)
         device_text_box.append(device_name_label)
         device_text_box.append(device_version_grid)
+        device_text_box.append(battery_label)
+        device_text_box.append(charging_label)
         device_text_box.append(self.usb_forward_status_label)
         device_info_box.append(device_text_box)
 
@@ -340,24 +377,51 @@ class MainWindow(Adw.ApplicationWindow):
 
         # Create a row for the auto-update setting
         auto_update_row = Adw.SwitchRow(
-            title=_("Automatically update"), subtitle=_("Automatically update ALVR when connected"))
+            title=_("Automatically update"), 
+            subtitle=_("Automatically update ALVR when connected"))
+        auto_update_row.set_active(self.get_user_config(device_serial, 'auto_update'))
+        auto_update_row.connect('notify::active', self.on_auto_update_toggled)
+        auto_update_row.set_sensitive(authorized)
         settings_group.add(auto_update_row)
 
         # Create a row for the auto USB connection setting
-        auto_usb_row = Adw.SwitchRow(title=_("Automatically connect via USB"),
-                                     subtitle=_("Automatically prepare the device for USB connection instead of Wi-Fi"))
+        auto_usb_row = Adw.SwitchRow(
+            title=_("Automatically connect via USB"),
+            subtitle=_("Automatically prepare the device for USB connection instead of Wi-Fi"))
+        auto_usb_row.set_active(self.get_user_config(device_serial, 'auto_usb_forward'))
+        auto_usb_row.connect('notify::active', self.on_auto_usb_forward_toggled)
+        auto_usb_row.set_sensitive(authorized)
         settings_group.add(auto_usb_row)
 
         # Create a row for the auto USB connection setting
-        wifi_switch = Adw.SwitchRow(title=_("Use Wi-Fi"), subtitle=_("Switch connection to Wi-Fi"))
-        wifi_switch.set_active(self.user_config.get('devices', {}).get(
-            device_serial, {}).get('wifi_enabled', False))
+        wifi_switch = Adw.SwitchRow(
+            title=_("Use Wi-Fi"), 
+            subtitle=_("Switch connection to Wi-Fi"))
+        wifi_switch.set_active(self.get_user_config(device_serial, 'wifi_enabled'))
         wifi_switch.connect('notify::active', self.on_wifi_switch_toggled)
+        wifi_switch.set_sensitive(authorized)
         settings_group.add(wifi_switch)
+        
+        # Create a row for the use_crop setting
+        use_crop_row = Adw.SwitchRow(
+            title=_("Use Crop"),
+            subtitle=_("Enable cropping for scrcpy"))
+        use_crop_row.set_active(self.get_user_config(device_serial, 'use_crop'))
+        use_crop_row.connect('notify::active', self.on_use_crop_toggled)
+        use_crop_row.set_sensitive(authorized)
+        settings_group.add(use_crop_row)
+
+        # Create a row for the crop_params setting
+        crop_params_row = Adw.EntryRow(
+            title=_("Crop Parameters"))
+        crop_params_row.set_text(self.get_user_config(device_serial, 'crop_params', 
+                                    self.get_device_config(device_model).get('default_crop', '')))
+        crop_params_row.connect('changed', self.on_crop_params_changed)
+        crop_params_row.set_sensitive(authorized)
+        settings_group.add(crop_params_row)
 
         # Add the settings group to the main device box
         device_box.append(settings_group)
-
 
         # Wrap the device box in an AdwClamp
         clamped_device_box = Adw.Clamp(child=device_box)
@@ -368,15 +432,32 @@ class MainWindow(Adw.ApplicationWindow):
             self.install_button.set_sensitive(False)
             self.streaming_button.set_sensitive(False)
             self.usb_button.set_sensitive(False)
+        else:  
+            self.unauthorized_banner.set_revealed(False)
+            self.install_button.set_sensitive(True)
+            self.streaming_button.set_sensitive(True)
+            self.usb_button.set_sensitive(True)
+        
+        self.check_usb_forwarding_status()
 
         return clamped_device_box
+    
+    def on_use_crop_toggled(self, switch, state):
+        self.set_user_config(self.current_serial, 'use_crop', switch.get_active())
+        
+    def on_crop_params_changed(self, entry):
+        self.set_user_config(self.current_serial, 'crop_params', entry.get_text())
+    
+    def on_auto_update_toggled(self, switch, state):
+        self.set_user_config(self.current_serial, 'auto_update', switch.get_active())
+        
+    def on_auto_usb_forward_toggled(self, switch, state):
+        self.set_user_config(self.current_serial, 'auto_usb_forward', switch.get_active())
 
     def get_device_image_path(self, model):
         # Получение пути к изображению устройства
-        for device in self.devices_config['devices']:
-            if device['model'] == model:
-                return device['image']
-        return './assets/default.png'  # Изображение по умолчанию
+        return self.get_device_config(model).get('image', './assets/unknown.png')
+       
 
     def on_show_how_clicked(self, button, device_model):
         # Открытие окна с инструкцией
@@ -406,49 +487,57 @@ class MainWindow(Adw.ApplicationWindow):
             self.show_toast("Инструкция недоступна")
 
 # USB Forwading
-
+    def is_usb_forwarding_enabled(self):
+        try:
+            result = subprocess.check_output(['adb', 'forward', '--list'], text=True)
+            return 'tcp:9943' in result and 'tcp:9944' in result
+        except Exception as e:
+            print(f"USB Forwarding Error: {e}")
+            return False
+        
     def setup_usb_forwarding(self, _):
         try:
-            subprocess.run(['adb', 'forward', 'tcp:9943', 'tcp:9943'])
-            subprocess.run(['adb', 'forward', 'tcp:9944', 'tcp:9944'])
+            if self.is_usb_forwarding_enabled():
+                # USB forwarding is currently enabled, so disable it
+                subprocess.run(['adb', 'forward', '--remove', 'tcp:9943'])
+                subprocess.run(['adb', 'forward', '--remove', 'tcp:9944'])
+                self.show_toast('USB Forwarding Disabled')
+            else:
+                # USB forwarding is currently disabled, so enable it
+                subprocess.run(['adb', 'forward', 'tcp:9943', 'tcp:9943'])
+                subprocess.run(['adb', 'forward', 'tcp:9944', 'tcp:9944'])
+                self.show_toast('USB Forwarding Enabled')
             self.check_usb_forwarding_status()
         except Exception as e:
             self.show_toast(f'USB Forwarding Error: {e}')
 
     def check_usb_forwarding_status(self):
         try:
-            result = subprocess.check_output(
-                ['adb', 'forward', '--list'], text=True)
-            if 'tcp:9943' in result and 'tcp:9944' in result:
-                self.usb_button.add_css_class("green")
-                self.usb_forward_status_label.set_label(
-                    'USB Forwarding: Enabled')
+            if self.is_usb_forwarding_enabled():
+                self.usb_button.add_css_class("success")
+                self.usb_forward_status_label.set_label('USB Forwarding: Enabled')
             else:
-                self.usb_button.remove_css_class("green")
-                self.usb_forward_status_label.set_label(
-                    'USB Forwarding: Not enabled')
+                self.usb_button.remove_css_class("success")
+                self.usb_forward_status_label.set_label('USB Forwarding: Not enabled')
         except Exception as e:
-            self.usb_button.remove_css_class("green")
-            self.usb_button.add_css_class("destructive-action")
-            self.usb_forward_status_label.set_label(
-                'USB Forwarding: Error checking status')
+            self.usb_button.remove_css_class("success")
+            self.usb_button.add_css_class("error")
+            self.usb_forward_status_label.set_label('USB Forwarding: Error checking status')
             print(f"USB Forwarding Error: {e}")
-
 # End USB Forwarding
 
 
 # Streaming
-
     def on_streaming_button_clicked(self, button):
         # Запуск scrcpy с возможностью изменения параметра --crop
         self.start_scrcpy(self.current_serial)
 
     def start_scrcpy(self, device_serial):
         # Получение настроек scrcpy из конфигурации
-        device_settings = self.user_config.get(
-            'devices', {}).get(device_serial, {})
-        use_crop = device_settings.get('use_crop', False)
-        crop_params = device_settings.get('crop_params', '')
+        use_crop = self.get_user_config(device_serial, 'use_crop') 
+        device_model = self.devices_info[device_serial]['Model']
+        default_crop = self.get_device_config(device_model).get('default_crop', '')
+        crop_params = self.get_user_config(device_serial, 'crop_params', default_crop)
 
         # Формирование команды для запуска scrcpy с передачей серийного номера устройства
         # Добавляем опцию -s для выбора устройства
@@ -461,28 +550,26 @@ class MainWindow(Adw.ApplicationWindow):
             subprocess.Popen(scrcpy_command)
         except Exception as e:
             print(f"Ошибка при запуске scrcpy: {e}")
-
 # End Streaming
 
 
 # Wi-Fi
-
     def on_wifi_switch_toggled(self, switch, state):
         # Переключение соединения на Wi-Fi
         if switch.get_active():
-            self.connect_device_wifi(self.current_serial)
+            self.connect_device_wifi(self.current_serial, save=True)
         else:
-            self.disconnect_device_wifi(self.current_serial)
+            self.disconnect_device_wifi(self.current_serial, save=True)
 
-    def connect_device_wifi(self, device_serial):
+    def connect_device_wifi(self, device_serial, save=False):
         try:
-            device_config = self.user_config.get('devices', {}).get(device_serial, {})
-            ip_address = device_config.get('ip_address')
+            ip_address = self.get_user_config(device_serial, 'ip_address')
 
             if ip_address:
                 try:
                     subprocess.run(['adb', 'connect', f'{ip_address}:5555'], check=True)
-                    self._update_wifi_config(device_serial, ip_address)
+                    if save:
+                        self._update_wifi_config(device_serial, ip_address)
                     return
                 except subprocess.CalledProcessError:
                     pass
@@ -499,21 +586,20 @@ class MainWindow(Adw.ApplicationWindow):
             self.show_toast(f"Ошибка подключения по Wi-Fi: {e}")
 
     def _update_wifi_config(self, device_serial, ip_address):
-        device_config = self.user_config.setdefault('devices', {}).setdefault(device_serial, {})
-        device_config.update({'wifi_enabled': True, 'ip_address': ip_address, 'wifi_serial': f"{ip_address}:5555"})
-        self.save_user_config()
+        self.set_user_config(device_serial, 'wifi_enabled', True)
+        self.set_user_config(device_serial, 'ip_address', ip_address)
+        self.set_user_config(device_serial, 'wifi_serial', f"{ip_address}:5555")
         self.show_toast("Устройство подключено по Wi-Fi")
 
-    def disconnect_device_wifi(self, device_serial):
+    def disconnect_device_wifi(self, device_serial, save=False):
         # Отключение устройства от Wi-Fi
         try:
             subprocess.run(['adb', '-s', device_serial, 'disconnect'], check=True)
             self.show_toast("Устройство отключено от Wi-Fi")
             
             # Сохранение настройки
-            self.user_config.setdefault('devices', {}).setdefault(
-                self.current_serial, {})['wifi_enabled'] = False
-            self.save_user_config()
+            if save:
+                self.set_user_config(device_serial, 'wifi_enabled', False)
             
         except Exception as e:
             self.show_toast(f"Ошибка отключения от Wi-Fi: {e}")
@@ -522,25 +608,9 @@ class MainWindow(Adw.ApplicationWindow):
         for serial, device_config in self.user_config.get('devices', {}).items():
             if device_config.get('wifi_enabled', False):
                 self.connect_device_wifi(serial)
-
 # End Wi-Fi
 
-    def show_about_dialog(self, action, param):
-        dialog = Adw.AboutDialog()
-        dialog.set_application_name(_("ALVR Companion"))
-        dialog.set_developer_name(_("Anton Palgunov (Toxblh)"))
-        dialog.set_version(APP_VERSION)
-        dialog.set_copyright(_("© 2024 Anton Palgunov (Toxblh)"))
-        dialog.set_license_type(Gtk.License.MIT_X11)
-        dialog.set_translator_credits("translator-credits")
-        dialog.set_issue_url("https://github.com/Toxblh/ALVR-Companion/issues")
-        dialog.add_link("GitHub", "https://github.com/Toxblh/ALVR-Companion")
-        dialog.add_link("Donate", "https://www.buymeacoffee.com/toxblh")
-
-        dialog.present(self.get_application().get_active_window())
-
 # Download APK
-
     def download_apk(self):
         try:
             response = requests.get(self.APK_URL, stream=True)
@@ -581,12 +651,30 @@ class MainWindow(Adw.ApplicationWindow):
         self.progress_bar.set_visible(False)
         self.show_toast(_(f"Download APK Error: {message}"))
         return False
-
 # End Download APK
 
+# Monitor ADB devices
     def start_adb_monitor(self):
         self.devices_info = {}
         self.adb_monitor_id = GLib.timeout_add(1000, self.check_adb_devices)
+        self.device_monitor_id = GLib.timeout_add(5000, self.device_info_update)
+
+    def device_info_update(self):
+        try:
+            result = subprocess.check_output(['adb', 'devices'], text=True)
+            lines = result.strip().split('\n')[1:]  # Пропускаем первую строку
+            devices = [line.split('\t') for line in lines if line.strip()]
+            
+            for device in devices:
+                serial = device[0]
+                if device[1] != 'unauthorized':
+                    device_info = get_device_info(serial)
+                    device_info['Authorized'] = True
+                    self.devices_info[serial] = device_info
+        
+        except Exception as e:
+            print(f"ADB Error: {e}")
+        return True
 
     def check_adb_devices(self):
         try:
@@ -626,15 +714,19 @@ class MainWindow(Adw.ApplicationWindow):
                         'Manufacturer': None
                         }
                     self.devices_info[serial] = unauth_device
-                    self.add_device_to_sidebar(unauth_device)
-                    if self.current_serial == None:
-                        self.current_serial = serial
-                        self.show_device_page(serial)
-                else:    
+                    self.add_device_to_sidebar(serial)
+                else:  
                     device_info = get_device_info(serial)
                     self.devices_info[serial] = device_info
                     self.devices_info[serial]['Authorized'] = True
-                    self.add_device_to_sidebar(device_info)
+                    self.add_device_to_sidebar(serial)
+
+                self.auto_update_device(serial)
+                self.auto_usb_forward_device(serial)
+
+            if connected_serials and self.current_serial is None:
+                self.current_serial = connected_serials[0]
+                self.show_device_page(self.current_serial)
 
             for serial in removed_serials:
                 self.remove_device_from_sidebar(serial)
@@ -643,19 +735,42 @@ class MainWindow(Adw.ApplicationWindow):
         except Exception as e:
             print(f"ADB Error: {e}")
         return True  # Продолжаем вызывать эту функцию
+    
+# End Monitor ADB devices
 
-    def add_device_to_sidebar(self, device_info):
+# Auto hooks
+    def auto_update_device(self, serial):
+        unique_id = self.get_device_unique_id(serial)
+        if self.get_user_config(serial, 'auto_update'):
+            device_info = self.devices_info[serial]
+            device_alvr_version = device_info['ALVR Version']
+            if device_alvr_version != self.VERSION:
+                # Start installation
+                print(f"Auto-updating device {unique_id}")
+                self.install_apk(serial)
+                self.show_toast(_("Auto-updating device {unique_id}"))
+                
+    def auto_usb_forward_device(self, serial):
+        if self.get_user_config(serial, 'auto_usb_forward'):
+            self.setup_usb_forwarding(serial)        
+# End Auto hooks
+
+# Sidebar
+    def add_device_to_sidebar(self, serial_connect):
         # Добавление устройства в боковую панель
+        
+        is_wifi = bool(is_ip_value(serial_connect))
+        device_info = self.devices_info[serial_connect]
         serial = device_info['Serial Number']
         model = device_info['Model']
         image_path = self.get_device_image_path(model)
-        row = create_list_device(model, serial, image_path)
-        row.set_name(serial)
+        row = create_list_device(model, serial, image_path, is_wifi)
+        row.set_name(serial_connect)
         self.list.append(row)
         
     def update_device_in_sidebar(self, serial):
         self.remove_device_from_sidebar(serial)
-        self.add_device_to_sidebar(self.devices_info[serial])
+        self.add_device_to_sidebar(serial)
         if self.current_serial == serial:
             self.show_device_page(self.current_serial, force_update=True)
 
@@ -665,7 +780,10 @@ class MainWindow(Adw.ApplicationWindow):
             if row.get_name() == serial:
                 self.list.remove(row)
         self.show_toast(_("Device disconnected"))
+# End Sidebar
 
+
+# Install APK
     def on_install_button_clicked(self, _1, _2):
         self.install_button.set_sensitive(False)
         self.progress_bar.set_visible(True)
@@ -737,6 +855,21 @@ class MainWindow(Adw.ApplicationWindow):
         self.install_button.set_sensitive(True)
         self.install_button.set_label(_('Install'))
         return False
+# End Install APK
+
+    def show_about_dialog(self, action, param):
+        dialog = Adw.AboutDialog()
+        dialog.set_application_name(_("ALVR Companion"))
+        dialog.set_developer_name(_("Anton Palgunov (Toxblh)"))
+        dialog.set_version(APP_VERSION)
+        dialog.set_copyright(_("© 2024 Anton Palgunov (Toxblh)"))
+        dialog.set_license_type(Gtk.License.MIT_X11)
+        dialog.set_translator_credits("translator-credits")
+        dialog.set_issue_url("https://github.com/Toxblh/ALVR-Companion/issues")
+        dialog.add_link("GitHub", "https://github.com/Toxblh/ALVR-Companion")
+        dialog.add_link("Donate", "https://www.buymeacoffee.com/toxblh")
+
+        dialog.present(self.get_application().get_active_window())
 
     def show_details_window(self, _):
         try:
@@ -749,13 +882,8 @@ class MainWindow(Adw.ApplicationWindow):
 
             box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
             label = Gtk.Label(label="Device Information")
-            info = Gtk.Label(label=f"Model: {device_info['Model']}\n"
-                             f"Manufacturer: {device_info['Manufacturer']}\n"
-                             f"Android Version: {device_info['Android Version']}\n"
-                             f"Build Version: {device_info['Build Version']}\n"
-                             f"ALVR Version: {device_info['ALVR Version']}\n"
-                             f"Serial Number: {device_info['Serial Number']}\n"
-                             f"ALVR Latest: {self.VERSION}\n")
+            info = Gtk.Label(label=f"ALVR Latest: {self.VERSION}\n" + '\n'.join([f"{key}: {value}" for key, value in device_info.items()]))
+            
             box.append(label)
             box.append(info)
             window.set_child(box)
