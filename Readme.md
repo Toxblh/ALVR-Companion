@@ -3,7 +3,7 @@
      title="MTMR by Toxblh" width="60" height="60">
 # ALVR Companion
 
-![](/assets/app.png)
+![](/assets/gtk-app.png)
 
 A small tool for managing ALVR from Linux distribution repositories.
 
