@@ -33,8 +33,9 @@ def get_device_info(device_serial):
         
         package_info = subprocess.run(
             ['adb', '-s', device_serial, 'shell', 'dumpsys', 'package', APK_PACKAGE_NAME],
-            stdout=subprocess.PIPE, text=True
+            stdout=subprocess.PIPE, text=True, check=True
         ).stdout
+        
         version_installed = None
         for line in package_info.splitlines():
             if 'versionName=' in line:
@@ -44,7 +45,6 @@ def get_device_info(device_serial):
             device_info['ALVR Version'] = version_installed
         else:
             device_info['ALVR Version'] = None
-        
 
         print('Device Info:\n' + '\n'.join(
             [f"{key}: {value}" for key, value in device_info.items()]))
